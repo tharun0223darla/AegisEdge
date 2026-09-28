@@ -102,3 +102,5 @@ apps/web/android/app/release/
 /ocr-service/vision-pipeline-output/
 /ocr-service/test-output/
 /ocr-service/medicine-region.jpg
+scratch/
+
