@@ -1,0 +1,42 @@
+[
+  {
+    "brandName": "Citelec P 500mg/800mg",
+    "manufacturer": "Strides shasun Ltd",
+    "packSize": "strip of 10 tablets",
+    "provider": "APOLLO",
+    "productUrl": "https://www.apollopharmacy.in/medicine/citelec-p-tablet-10s",
+    "providerProductId": "citelec-p-tablet-10s"
+  },
+  {
+    "brandName": "AZ Micin 500mg",
+    "manufacturer": "Logos Pharma",
+    "packSize": "strip of 10 tablets",
+    "provider": "TATA_1MG",
+    "productUrl": "https://www.1mg.com/drugs/az-micin-500mg-tablet-788261",
+    "providerProductId": "788261"
+  },
+  {
+    "brandName": "A-Art",
+    "manufacturer": "Biophar Lifesciences Pvt Ltd",
+    "packSize": "ampoule of 2 ml Injection",
+    "provider": "APOLLO",
+    "productUrl": "https://www.apollopharmacy.in/medicine/a-art-injection",
+    "providerProductId": "a-art-injection"
+  },
+  {
+    "brandName": "A-Art",
+    "manufacturer": "Biophar Lifesciences Pvt Ltd",
+    "packSize": "ampoule of 2 ml Injection",
+    "provider": "TATA_1MG",
+    "productUrl": "https://www.1mg.com/drugs/a-art-injection-535382",
+    "providerProductId": "535382"
+  },
+  {
+    "brandName": "A Xanthin 100mg",
+    "manufacturer": "Alna Biotech Pvt Ltd",
+    "packSize": "strip of 10 tablets",
+    "provider": "PHARMEASY",
+    "productUrl": "https://pharmeasy.in/online-medicine-order/a-xanthin-100mg-tablet-119539",
+    "providerProductId": "119539"
+  }
+]

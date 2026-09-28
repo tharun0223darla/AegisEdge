@@ -1,0 +1,99 @@
+name: MediTrack release verification
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: release-verification-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_ENV: test
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/meditrack_test?schema=public
+  JWT_SECRET: ci-test-access-secret-at-least-48-characters-long-123456
+  JWT_REFRESH_SECRET: ci-test-refresh-secret-at-least-48-characters-654321
+  JWT_EXPIRES_IN: 15m
+  JWT_REFRESH_EXPIRES_IN: 30d
+  FRONTEND_URL: http://localhost:5173
+  API_BASE_URL: http://localhost:3001
+  VITE_API_URL: https://api.ci.example.test/api
+  VITE_ENABLE_DEVTOOLS: 'false'
+  PORT: 3001
+
+jobs:
+  verify:
+    name: Backend, web, Prisma, and Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: meditrack_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d meditrack_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/web/package-lock.json
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Install web dependencies
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Apply migrations to fresh CI database
+        run: npx prisma migrate deploy
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x apps/web/android/gradlew
+
+      - name: Run release verification gates
+        run: npm run verify:ci
+
+      - name: Upload Android debug smoke artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: meditrack-android-debug-${{ github.sha }}
+          path: apps/web/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7

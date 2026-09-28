@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "project": "web",
+  "violations": {
+    "src/components/dashboard/VitalsSimulator.tsx": {
+      "@typescript-eslint/no-unused-vars": 1
+    },
+    "src/components/dashboard/VoiceAssistant.tsx": {
+      "@typescript-eslint/no-unused-vars": 3
+    },
+    "src/components/medicines/MedicineForm.tsx": {
+      "react-hooks/exhaustive-deps": 1
+    },
+    "src/components/shared/ErrorBoundary.tsx": {
+      "<fatal>": 1
+    },
+    "src/components/ui/Toast.tsx": {
+      "react-refresh/only-export-components": 1
+    },
+    "src/pages/doseLogs/DoseLogsPage.tsx": {
+      "@typescript-eslint/no-unused-vars": 4
+    },
+    "src/pages/notifications/NotificationsPage.tsx": {
+      "@typescript-eslint/no-unused-vars": 1
+    },
+    "src/pages/prescriptions/PrescriptionDetailsPage.tsx": {
+      "@typescript-eslint/no-unused-vars": 4
+    },
+    "src/pages/prescriptions/PrescriptionUploadPage.tsx": {
+      "@typescript-eslint/no-unused-vars": 4
+    },
+    "src/pages/profile/ProfilePage.tsx": {
+      "@typescript-eslint/no-unused-vars": 1
+    },
+    "src/pages/settings/SettingsPage.tsx": {
+      "@typescript-eslint/no-unused-vars": 1
+    },
+    "src/pwa/registerSW.ts": {
+      "<fatal>": 2
+    }
+  }
+}

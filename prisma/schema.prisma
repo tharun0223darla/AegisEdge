@@ -1,0 +1,1490 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                           String                    @id @default(cuid())
+  email                        String                    @unique
+  phone                        String?                   @unique
+  passwordHash                 String
+  role                         UserRole                  @default(PATIENT)
+  isActive                     Boolean                   @default(true)
+  isVerified                   Boolean                   @default(false)
+  lastLoginAt                  DateTime?
+  createdAt                    DateTime                  @default(now())
+  updatedAt                    DateTime                  @updatedAt
+  adherenceSnapshots           AdherenceSnapshot[]
+  auditLogs                    AuditLog[]
+  bills                        Bill[]
+  doseLogs                     DoseLog[]
+  doseActionEvents             DoseActionEvent[]
+  extractedMedicines           ExtractedMedicine[]
+  medicineSchedules            MedicineSchedule[]
+  medicines                    Medicine[]
+  medicineImportBatches        MedicineImportBatch[]     @relation("MedicineImportUploadedBy")
+  medicineReviewSubmits        MedicineDataReview[]      @relation("MedicineReviewSubmittedBy")
+  medicineReviewDecides        MedicineDataReview[]      @relation("MedicineReviewReviewedBy")
+  notificationLogs             NotificationLog[]
+  notificationPreference       NotificationPreference?
+  patientProfile               PatientProfile?
+  prescriptions                Prescription[]
+  prescriptionVisionJobs       PrescriptionVisionJob[]
+  refillLogs                   RefillLog[]
+  refillOrders                 RefillOrder[]
+  medicineInventoryEvents      MedicineInventoryEvent[]
+  healthMetrics                HealthMetric[]
+  aiVoiceLogs                  AiVoiceLog[]
+  deviceRegistries             DeviceRegistry[]
+  emailVerificationTokens      EmailVerificationToken[]
+  medicineCorrections          MedicineCorrection[]
+  careRelationshipsAsPatient   CareRelationship[]        @relation("CareRelationshipPatient")
+  careRelationshipsAsCaregiver CareRelationship[]        @relation("CareRelationshipCaregiver")
+  careInvitationsSent          CareInvitation[]          @relation("CareInvitationPatient")
+  careInvitationsAccepted      CareInvitation[]          @relation("CareInvitationAcceptedBy")
+  patientSafetyProfile         PatientSafetyProfile?
+  allergyIntolerances          AllergyIntolerance[]
+  medicationSafetyFindings     MedicationSafetyFinding[]
+  doctorVisitReports           DoctorVisitReport[]
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, usedAt, expiresAt])
+  @@index([expiresAt])
+  @@map("email_verification_tokens")
+}
+
+model PatientProfile {
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  firstName        String
+  lastName         String
+  dateOfBirth      DateTime?
+  gender           String?
+  bloodGroup       String?
+  height           Float?
+  weight           Float?
+  allergies        String[]  @default([])
+  conditions       String[]  @default([])
+  emergencyContact String?
+  emergencyPhone   String?
+  notes            String?
+  avatarUrl        String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("patient_profiles")
+}
+
+model Medicine {
+  id                  String                            @id @default(cuid())
+  userId              String
+  medicineMasterId    String?
+  medicinePackageId   String?
+  name                String
+  genericName         String?
+  brandName           String?
+  form                MedicineForm                      @default(TABLET)
+  strength            String?
+  color               String?
+  shape               String?
+  instructions        String?
+  sideEffects         String?
+  totalQuantity       Int?
+  remainingQuantity   Int?
+  unit                String?
+  refillThreshold     Int?
+  lastStockAlertLevel StockAlertLevel?
+  lastStockAlertAt    DateTime?
+  source              MedSource                         @default(MANUAL)
+  userStripImageUrl   String?
+  userStripOcrText    String?
+  userStripOcrEngine  String?
+  visualConfirmed     Boolean                           @default(false)
+  captureReviewKey    String?
+  isActive            Boolean                           @default(true)
+  notes               String?
+  createdAt           DateTime                          @default(now())
+  updatedAt           DateTime                          @updatedAt
+  doseLogs            DoseLog[]
+  schedules           MedicineSchedule[]
+  medicineMaster      MedicineMaster?                   @relation(fields: [medicineMasterId], references: [id])
+  medicinePackage     MedicinePackage?                  @relation(fields: [medicinePackageId], references: [id])
+  user                User                              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refillLogs          RefillLog[]
+  refillOrders        RefillOrder[]
+  inventoryEvents     MedicineInventoryEvent[]
+  safetyFindingLinks  MedicationSafetyFindingMedicine[]
+
+  @@index([userId])
+  @@index([medicineMasterId])
+  @@index([medicinePackageId])
+  @@index([captureReviewKey])
+  @@index([userId, isActive])
+  @@map("medicines")
+}
+
+model MedicineSchedule {
+  id                 String            @id @default(cuid())
+  userId             String
+  medicineId         String
+  frequency          ScheduleFrequency @default(DAILY)
+  timesOfDay         String[]
+  daysOfWeek         Int[]             @default([])
+  startDate          DateTime
+  endDate            DateTime?
+  dosesPerIntake     Float             @default(1)
+  unit               String            @default("tablet")
+  isActive           Boolean           @default(true)
+  gracePeriodMinutes Int               @default(60)
+  timezone           String            @default("UTC")
+  notes              String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  doseLogs           DoseLog[]
+  medicine           Medicine          @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([medicineId])
+  @@index([userId, isActive])
+  @@map("medicine_schedules")
+}
+
+model DoseLog {
+  id                String             @id @default(cuid())
+  userId            String
+  medicineId        String
+  scheduleId        String
+  scheduledAt       DateTime
+  actionAt          DateTime?
+  status            DoseStatus         @default(PENDING)
+  snoozeUntil       DateTime?
+  snoozeCount       Int                @default(0)
+  actionSource      DoseActionSource?
+  barrierReason     DoseBarrierReason?
+  barrierRecordedAt DateTime?
+  notes             String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  medicine          Medicine           @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  schedule          MedicineSchedule   @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  actionEvents      DoseActionEvent[]
+  careEscalations   CareEscalation[]
+
+  @@unique([scheduleId, scheduledAt])
+  @@index([userId])
+  @@index([userId, status])
+  @@index([userId, scheduledAt])
+  @@index([userId, status, scheduledAt])
+  @@index([scheduleId])
+  @@index([status, snoozeUntil])
+  @@map("dose_logs")
+}
+
+model DoseActionEvent {
+  id             String           @id @default(cuid())
+  userId         String
+  doseLogId      String
+  clientActionId String           @unique
+  status         DoseStatus
+  source         DoseActionSource
+  occurredAt     DateTime
+  createdAt      DateTime         @default(now())
+  doseLog        DoseLog          @relation(fields: [doseLogId], references: [id], onDelete: Cascade)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, occurredAt])
+  @@index([doseLogId, occurredAt])
+  @@map("dose_action_events")
+}
+
+model NotificationLog {
+  id        String                @id @default(cuid())
+  userId    String
+  title     String
+  body      String
+  channel   NotificationChannel   @default(LOCAL)
+  sentAt    DateTime              @default(now())
+  isRead    Boolean               @default(false)
+  metadata  Json?
+  dedupeKey String?               @unique
+  createdAt DateTime              @default(now())
+  delivery  NotificationDelivery?
+  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, isRead])
+  @@map("notification_logs")
+}
+
+model NotificationPreference {
+  id                   String   @id @default(cuid())
+  userId               String   @unique
+  emailEnabled         Boolean  @default(false)
+  missedDoseEmails     Boolean  @default(false)
+  refillEmails         Boolean  @default(false)
+  includeMedicineNames Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+model NotificationDelivery {
+  id                String                     @id @default(cuid())
+  notificationLogId String                     @unique
+  channel           NotificationChannel
+  status            NotificationDeliveryStatus @default(PENDING)
+  attempts          Int                        @default(0)
+  maxAttempts       Int                        @default(5)
+  nextAttemptAt     DateTime?
+  claimedAt         DateTime?
+  provider          String?
+  providerMessageId String?
+  recipientMasked   String?
+  lastErrorCode     String?
+  sentAt            DateTime?
+  createdAt         DateTime                   @default(now())
+  updatedAt         DateTime                   @updatedAt
+  notificationLog   NotificationLog            @relation(fields: [notificationLogId], references: [id], onDelete: Cascade)
+
+  @@index([channel, status, nextAttemptAt])
+  @@map("notification_deliveries")
+}
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  userId     String
+  action     AuditAction
+  entityType String?
+  entityId   String?
+  oldValues  Json?
+  newValues  Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime    @default(now())
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, action])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
+
+model Prescription {
+  id                 String                  @id @default(cuid())
+  userId             String
+  fileName           String
+  storedName         String
+  localPath          String
+  mimeType           String
+  fileSize           Int
+  rawOcrText         String?
+  explainabilityJson Json?
+  status             DocumentStatus          @default(UPLOADED)
+  notes              String?
+  doctorName         String?
+  prescribedAt       DateTime?
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt
+  extractedMedicines ExtractedMedicine[]
+  visionJobs         PrescriptionVisionJob[]
+  user               User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, status])
+  @@map("prescriptions")
+}
+
+model PrescriptionVisionJob {
+  id             String          @id @default(cuid())
+  prescriptionId String
+  userId         String
+  status         VisionJobStatus @default(QUEUED)
+  progress       Int             @default(0)
+  stage          String?
+  attemptCount   Int             @default(0)
+  workerId       String?
+  resultPath     String?
+  resultJson     Json?
+  errorCode      String?
+  errorMessage   String?
+  startedAt      DateTime?
+  heartbeatAt    DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  prescription Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([prescriptionId, status])
+  @@index([status, createdAt])
+  @@map("prescription_vision_jobs")
+}
+
+model Bill {
+  id                 String              @id @default(cuid())
+  userId             String
+  fileName           String
+  storedName         String
+  localPath          String
+  mimeType           String
+  fileSize           Int
+  rawOcrText         String?
+  pharmacyName       String?
+  purchaseDate       DateTime?
+  totalAmount        Float?
+  status             DocumentStatus      @default(UPLOADED)
+  notes              String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  extractedMedicines ExtractedMedicine[]
+
+  @@index([userId])
+  @@index([userId, status])
+  @@map("bills")
+}
+
+model ExtractedMedicine {
+  id                          String                      @id @default(cuid())
+  userId                      String
+  prescriptionId              String?
+  billId                      String?
+  medicineName                String
+  dosage                      String?
+  frequency                   String?
+  timesOfDay                  String[]                    @default([])
+  durationDays                Int?
+  quantity                    Int?
+  instructions                String?
+  confidenceScore             Float?
+  reasons                     String[]                    @default([])
+  verificationSource          String?
+  brandName                   String?
+  genericName                 String?
+  strength                    String?
+  /// @deprecated Use resolutionState instead
+  verificationStatus          VerificationStatus          @default(NEEDS_REVIEW)
+  resolutionState             ResolutionState             @default(REVIEW)
+  verificationExecutionStatus VerificationExecutionStatus @default(NOT_ATTEMPTED)
+  verificationSkippedReason   String?
+  verificationPriority        Int?
+  originalCandidateMentionId  String?
+  extractionRunId             String?
+  isConfirmed                 Boolean                     @default(false)
+  isUserConfirmed             Boolean                     @default(false)
+  isActiveMedication          Boolean                     @default(false)
+  confirmedAt                 DateTime?
+  createdMedicineId           String?
+  createdScheduleId           String?
+  createdAt                   DateTime                    @default(now())
+  updatedAt                   DateTime                    @updatedAt
+  bill                        Bill?                       @relation(fields: [billId], references: [id])
+  prescription                Prescription?               @relation(fields: [prescriptionId], references: [id])
+  user                        User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([extractionRunId, originalCandidateMentionId])
+  @@index([userId])
+  @@index([prescriptionId])
+  @@index([billId])
+  @@index([userId, isConfirmed])
+  @@index([resolutionState])
+  @@index([verificationExecutionStatus])
+  @@index([isUserConfirmed, isActiveMedication])
+  @@index([originalCandidateMentionId])
+  @@map("extracted_medicines")
+}
+
+model RefillLog {
+  id                 String   @id @default(cuid())
+  userId             String
+  medicineId         String
+  totalQuantity      Int
+  dailyUsage         Float
+  remainingQuantity  Int
+  expectedFinishDate DateTime
+  refillReminderDate DateTime
+  notes              String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  medicine           Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([medicineId])
+  @@index([userId, refillReminderDate])
+  @@map("refill_logs")
+}
+
+model RefillOrder {
+  id                String            @id @default(cuid())
+  userId            String
+  medicineId        String
+  status            RefillOrderStatus @default(ORDERED)
+  provider          String?
+  expectedQuantity  Int?
+  receivedQuantity  Int?
+  externalReference String?
+  notes             String?
+  orderedAt         DateTime          @default(now())
+  expectedAt        DateTime?
+  receivedAt        DateTime?
+  cancelledAt       DateTime?
+  idempotencyKey    String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  medicine          Medicine          @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, idempotencyKey])
+  @@index([userId, status, orderedAt])
+  @@index([medicineId, status])
+  @@map("refill_orders")
+}
+
+model MedicineInventoryEvent {
+  id              String             @id @default(cuid())
+  userId          String
+  medicineId      String
+  type            InventoryEventType
+  delta           Int
+  quantityBefore  Int?
+  quantityAfter   Int
+  reason          String?
+  sourceReference String?
+  idempotencyKey  String?
+  createdAt       DateTime           @default(now())
+  medicine        Medicine           @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, idempotencyKey])
+  @@index([userId, createdAt])
+  @@index([medicineId, createdAt])
+  @@map("medicine_inventory_events")
+}
+
+model AdherenceSnapshot {
+  id               String    @id @default(cuid())
+  userId           String
+  snapshotDate     DateTime
+  totalScheduled   Int       @default(0)
+  totalTaken       Int       @default(0)
+  totalMissed      Int       @default(0)
+  totalSnoozed     Int       @default(0)
+  totalSkipped     Int       @default(0)
+  adherencePercent Float     @default(0)
+  currentStreak    Int       @default(0)
+  riskLevel        RiskLevel @default(LOW)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, snapshotDate])
+  @@index([userId])
+  @@index([userId, snapshotDate])
+  @@index([userId, riskLevel])
+  @@map("adherence_snapshots")
+}
+
+model DoctorVisitReport {
+  id              String                @id @default(cuid())
+  userId          String
+  title           String
+  rangeStart      DateTime
+  rangeEnd        DateTime
+  sections        DoctorReportSection[]
+  snapshot        Json
+  snapshotVersion Int                   @default(1)
+  archivedAt      DateTime?
+  createdAt       DateTime              @default(now())
+  user            User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shares          DoctorReportShare[]
+
+  @@index([userId, createdAt])
+  @@index([userId, archivedAt])
+  @@map("doctor_visit_reports")
+}
+
+model DoctorReportShare {
+  id             String                    @id @default(cuid())
+  reportId       String
+  tokenHash      String                    @unique
+  expiresAt      DateTime
+  revokedAt      DateTime?
+  lastAccessedAt DateTime?
+  accessCount    Int                       @default(0)
+  createdAt      DateTime                  @default(now())
+  report         DoctorVisitReport         @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  accesses       DoctorReportShareAccess[]
+
+  @@index([reportId, createdAt])
+  @@index([expiresAt, revokedAt])
+  @@map("doctor_report_shares")
+}
+
+model DoctorReportShareAccess {
+  id         String                   @id @default(cuid())
+  shareId    String
+  action     DoctorReportAccessAction
+  accessedAt DateTime                 @default(now())
+  share      DoctorReportShare        @relation(fields: [shareId], references: [id], onDelete: Cascade)
+
+  @@index([shareId, accessedAt])
+  @@map("doctor_report_share_accesses")
+}
+
+enum DoctorReportSection {
+  MEDICATIONS
+  ADHERENCE
+  ALLERGIES
+  SAFETY
+  REFILLS
+  VITALS
+}
+
+enum DoctorReportAccessAction {
+  VIEWED
+  DOWNLOADED
+}
+
+model CareRelationship {
+  id                      String                 @id @default(cuid())
+  patientId               String
+  caregiverId             String
+  status                  CareRelationshipStatus @default(ACTIVE)
+  permissions             CarePermission[]
+  consentVersion          String
+  patientConsentedAt      DateTime
+  caregiverAcknowledgedAt DateTime
+  expiresAt               DateTime?
+  revokedAt               DateTime?
+  revokedById             String?
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+  patient                 User                   @relation("CareRelationshipPatient", fields: [patientId], references: [id], onDelete: Cascade)
+  caregiver               User                   @relation("CareRelationshipCaregiver", fields: [caregiverId], references: [id], onDelete: Cascade)
+  invitations             CareInvitation[]
+  escalations             CareEscalation[]
+
+  @@unique([patientId, caregiverId])
+  @@index([patientId, status])
+  @@index([caregiverId, status])
+  @@index([status, expiresAt])
+  @@map("care_relationships")
+}
+
+model CareInvitation {
+  id              String               @id @default(cuid())
+  patientId       String
+  invitedEmail    String
+  tokenHash       String               @unique
+  permissions     CarePermission[]
+  status          CareInvitationStatus @default(PENDING)
+  consentVersion  String
+  expiresAt       DateTime
+  accessExpiresAt DateTime
+  acceptedAt      DateTime?
+  acceptedById    String?
+  relationshipId  String?
+  revokedAt       DateTime?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  patient         User                 @relation("CareInvitationPatient", fields: [patientId], references: [id], onDelete: Cascade)
+  acceptedBy      User?                @relation("CareInvitationAcceptedBy", fields: [acceptedById], references: [id], onDelete: SetNull)
+  relationship    CareRelationship?    @relation(fields: [relationshipId], references: [id], onDelete: SetNull)
+
+  @@index([patientId, status])
+  @@index([invitedEmail, status])
+  @@index([status, expiresAt])
+  @@map("care_invitations")
+}
+
+model CareEscalation {
+  id             String               @id @default(cuid())
+  relationshipId String
+  doseLogId      String
+  kind           CareEscalationKind   @default(MISSED_DOSE)
+  status         CareEscalationStatus @default(PENDING)
+  attempts       Int                  @default(0)
+  claimedAt      DateTime?
+  nextAttemptAt  DateTime?
+  notifiedAt     DateTime?
+  lastError      String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  relationship   CareRelationship     @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
+  doseLog        DoseLog              @relation(fields: [doseLogId], references: [id], onDelete: Cascade)
+
+  @@unique([relationshipId, doseLogId, kind])
+  @@index([status, nextAttemptAt])
+  @@index([doseLogId])
+  @@map("care_escalations")
+}
+
+enum CarePermission {
+  VIEW_ADHERENCE
+  VIEW_MEDICATIONS
+  VIEW_MEDICATION_SAFETY
+  VIEW_REFILLS
+  RECEIVE_MISSED_DOSE_ALERTS
+  RECEIVE_DOSE_HELP_REQUESTS
+}
+
+enum CareEscalationKind {
+  MISSED_DOSE
+  DOSE_HELP_REQUEST
+}
+
+enum CareRelationshipStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum CareInvitationStatus {
+  PENDING
+  ACCEPTED
+  REVOKED
+  EXPIRED
+}
+
+enum CareEscalationStatus {
+  PENDING
+  PROCESSING
+  SENT
+  FAILED
+}
+
+enum UserRole {
+  PATIENT
+  CAREGIVER
+  DOCTOR
+  ADMIN
+}
+
+enum DoseStatus {
+  PENDING
+  TAKEN
+  MISSED
+  SNOOZED
+  SKIPPED
+}
+
+enum DoseBarrierReason {
+  FORGOT
+  ASLEEP
+  AWAY_FROM_HOME
+  ROUTINE_CHANGED
+  RAN_OUT
+  COST_OR_ACCESS
+  SIDE_EFFECT_CONCERN
+  DID_NOT_WANT_TO_TAKE
+  OTHER
+}
+
+enum DoseActionSource {
+  APP
+  DEVICE_NOTIFICATION
+  OFFLINE_SYNC
+  SYSTEM
+}
+
+enum ScheduleFrequency {
+  DAILY
+  TWICE_DAILY
+  THREE_TIMES_DAILY
+  FOUR_TIMES_DAILY
+  WEEKLY
+  AS_NEEDED
+  CUSTOM
+}
+
+enum MedicineForm {
+  TABLET
+  CAPSULE
+  SYRUP
+  INJECTION
+  DROPS
+  INHALER
+  PATCH
+  CREAM
+  OINTMENT
+  POWDER
+  OTHER
+}
+
+enum MedSource {
+  MANUAL
+  BILL
+  BARCODE
+  PRESCRIPTION
+  PACKAGE_IMAGE
+  IMPORT
+}
+
+enum NotificationChannel {
+  LOCAL
+  PUSH
+  SMS
+  EMAIL
+}
+
+enum NotificationDeliveryStatus {
+  PENDING
+  PROCESSING
+  SENT
+  SKIPPED
+  FAILED
+}
+
+enum RefillOrderStatus {
+  ORDERED
+  RECEIVED
+  CANCELLED
+}
+
+enum InventoryEventType {
+  REFILL_RECEIVED
+  MANUAL_CORRECTION
+}
+
+enum StockAlertLevel {
+  LOW
+  CRITICAL
+  OUT
+}
+
+enum AuditAction {
+  CREATED
+  UPDATED
+  DELETED
+  LOGIN
+  LOGOUT
+  PASSWORD_CHANGED
+  DOSE_TAKEN
+  DOSE_MISSED
+  DOSE_SNOOZED
+  DOSE_SKIPPED
+  DOSE_BARRIER_RECORDED
+  SCHEDULE_ACTIVATED
+  SCHEDULE_DEACTIVATED
+  FILE_UPLOADED
+  OCR_PROCESSED
+  OCR_FAILED
+  PRESCRIPTION_CONFIRMED
+  BILL_CONFIRMED
+  REFILL_LOGGED
+  DOSE_SNOOZED_EXTENDED
+  ADHERENCE_SNAPSHOT_CREATED
+  REMINDER_SENT
+  CARE_INVITATION_CREATED
+  CARE_INVITATION_ACCEPTED
+  CARE_INVITATION_REVOKED
+  CARE_ACCESS_UPDATED
+  CARE_ACCESS_REVOKED
+  CAREGIVER_DATA_ACCESSED
+  CARE_MISSED_DOSE_ESCALATED
+  CARE_DOSE_HELP_REQUESTED
+  CARE_DOSE_HELP_ESCALATED
+  EMAIL_VERIFICATION_SENT
+  EMAIL_VERIFIED
+  SAFETY_PROFILE_UPDATED
+  ALLERGY_RECORDED
+  ALLERGY_UPDATED
+  ALLERGY_REMOVED
+  SAFETY_FINDING_ACKNOWLEDGED
+  MEDICATION_SAFETY_REVIEWED
+  DOCTOR_REPORT_CREATED
+  DOCTOR_REPORT_ARCHIVED
+  DOCTOR_REPORT_SHARE_CREATED
+  DOCTOR_REPORT_SHARE_REVOKED
+}
+
+enum VisionJobStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum DocumentStatus {
+  UPLOADED
+  OCR_PROCESSED
+  CONFIRMED
+  FAILED
+  OCR_PROCESSING
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model HealthMetric {
+  id                    String          @id @default(cuid())
+  userId                String
+  deviceRegistryId      String?
+  metricType            MetricType
+  value                 Json // Normalized, metric-specific payload. Historical rows remain compatible.
+  unit                  String
+  recordedAt            DateTime
+  receivedAt            DateTime        @default(now())
+  timezoneOffsetMinutes Int?
+  source                MetricSource    @default(MANUAL)
+  quality               MetricQuality   @default(USER_REPORTED)
+  qualityFlags          String[]        @default([])
+  sourceMetadata        Json?
+  clientRecordId        String?
+  idempotencyKey        String?
+  safetyAssessment      Json?
+  evaluatedAt           DateTime?
+  alertedAt             DateTime?
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  deviceRegistry        DeviceRegistry? @relation(fields: [deviceRegistryId], references: [id], onDelete: SetNull)
+  user                  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, idempotencyKey])
+  @@index([userId])
+  @@index([userId, metricType, recordedAt])
+  @@index([deviceRegistryId, recordedAt])
+  @@map("health_metrics")
+}
+
+model AiVoiceLog {
+  id               String   @id @default(cuid())
+  userId           String
+  sessionDate      DateTime @default(now())
+  transcript       Json // Array of messages: { role: "assistant" | "user", text: string }
+  summary          String? // AI-generated summary of physical condition
+  extractedVitals  Json? // e.g., symptoms: ["headache", "dizziness"], severity: "low"
+  sentimentScore   Float? // scale from -1.0 (bad) to 1.0 (good)
+  recoveryProgress Float? // estimated recovery progress (0.0 to 100.0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("ai_voice_logs")
+}
+
+model DeviceRegistry {
+  id            String           @id @default(cuid())
+  userId        String
+  deviceName    String
+  deviceId      String // Platform-scoped identifier; never expose a raw MAC when avoidable.
+  deviceType    DeviceType
+  trustLevel    DeviceTrustLevel @default(UNVERIFIED)
+  protocol      String?
+  manufacturer  String?
+  model         String?
+  verifiedAt    DateTime?
+  isPaired      Boolean          @default(true)
+  lastSyncedAt  DateTime?
+  lastSyncError String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  healthMetrics HealthMetric[]
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, deviceId])
+  @@index([userId])
+  @@map("device_registries")
+}
+
+enum MetricType {
+  BLOOD_PRESSURE
+  BLOOD_GLUCOSE
+  HEART_RATE
+  OXYGEN_SATURATION
+  SLEEP_HOURS
+}
+
+enum MetricSource {
+  MANUAL
+  BLUETOOTH_SIMULATED
+  BLUETOOTH_REAL
+  SMARTWATCH
+  HEALTH_CONNECT
+  DEVICE_VENDOR
+  UNVERIFIED_DEVICE
+}
+
+enum MetricQuality {
+  USER_REPORTED
+  DEVICE_REPORTED
+  QUESTIONABLE
+}
+
+enum DeviceTrustLevel {
+  UNVERIFIED
+  SIMULATOR
+  VERIFIED
+}
+
+enum DeviceType {
+  BP_METER
+  GLUCOSE_METER
+  PULSE_OXIMETER
+  SMARTWATCH
+  SMART_CAP
+}
+
+enum VerificationStatus {
+  VERIFIED
+  VERIFY_REQUIRED
+  NEEDS_REVIEW
+}
+
+enum ResolutionState {
+  VERIFIED
+  REVIEW
+  UNKNOWN
+  REJECTED
+  PURCHASE_CONFIRMED
+}
+
+enum VerificationExecutionStatus {
+  NOT_ATTEMPTED
+  COMPLETED
+  SKIPPED_LOW_INFORMATION
+  SKIPPED_CALL_LIMIT
+  TIMEOUT
+  FAILED
+}
+
+model MedicineMaster {
+  id                   String                 @id @default(cuid())
+  brandName            String
+  normalizedName       String?
+  genericName          String?
+  composition          String?
+  salts                Json?
+  category             String?
+  manufacturer         String?
+  strength             String?
+  type                 String?
+  isDiscontinued       Boolean                @default(false)
+  prescriptionRequired Boolean?
+  saltProfileId        String?
+  saltProfile          SaltProfile?           @relation(fields: [saltProfileId], references: [id])
+  brandOverride        Json?
+  source               RecordSource           @default(IMPORT)
+  isVerified           Boolean                @default(false)
+  isArchived           Boolean                @default(false)
+  version              Int                    @default(1)
+  dedupeKey            String                 @unique
+  mergedIntoId         String?
+  mergedInto           MedicineMaster?        @relation("MedicineMasterMerge", fields: [mergedIntoId], references: [id], onDelete: SetNull)
+  mergedFrom           MedicineMaster[]       @relation("MedicineMasterMerge")
+  mergedAt             DateTime?
+  mergeReason          String?
+  packages             MedicinePackage[]
+  purchaseLinks        MedicinePurchaseLink[]
+  reviewItems          MedicineDataReview[]
+  userMedicines        Medicine[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+
+  @@index([brandName])
+  @@index([normalizedName])
+  @@index([composition])
+  @@index([saltProfileId])
+  @@index([isArchived])
+  @@index([isDiscontinued])
+  @@index([prescriptionRequired])
+  @@index([mergedIntoId])
+  @@map("medicine_masters")
+}
+
+model SaltProfile {
+  id                      String                 @id @default(cuid())
+  saltKey                 String                 @unique
+  displayName             String
+  ingredients             Json
+  uses                    String?
+  howToTake               String?
+  whenToTake              String?
+  sideEffects             Json?
+  warnings                String?
+  substitutes             Json?
+  storage                 String?
+  sourceRefs              Json?
+  enrichmentStatus        EnrichmentStatus       @default(NEEDS_SOURCE)
+  lastEnrichmentAttemptAt DateTime?
+  lastEnrichmentSuccessAt DateTime?
+  lastEnrichmentError     String?
+  source                  RecordSource           @default(IMPORT)
+  isVerified              Boolean                @default(false)
+  version                 Int                    @default(1)
+  language                String                 @default("en")
+  brands                  MedicineMaster[]
+  patientExplanations     PatientExplanation[]
+  detailRequests          MedicineDataReview[]
+  webSourceAssistCaches   WebSourceAssistCache[]
+  allergyIntolerances     AllergyIntolerance[]
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+
+  @@index([saltKey])
+  @@index([enrichmentStatus, lastEnrichmentAttemptAt])
+  @@map("salt_profiles")
+}
+
+model PatientSafetyProfile {
+  id                 String                   @id @default(cuid())
+  userId             String                   @unique
+  pregnancyStatus    SafetyConditionStatus    @default(UNKNOWN)
+  kidneyCondition    SafetyConditionStatus    @default(UNKNOWN)
+  liverCondition     SafetyConditionStatus    @default(UNKNOWN)
+  source             SafetyRecordSource       @default(PATIENT_REPORTED)
+  verificationStatus SafetyVerificationStatus @default(UNVERIFIED)
+  lastReviewedAt     DateTime?
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+  user               User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("patient_safety_profiles")
+}
+
+model AllergyIntolerance {
+  id                  String                   @id @default(cuid())
+  userId              String
+  saltProfileId       String?
+  substanceRaw        String
+  normalizedSubstance String
+  category            AllergyCategory          @default(ALLERGY)
+  criticality         AllergyCriticality       @default(UNABLE_TO_ASSESS)
+  reaction            String?
+  clinicalStatus      AllergyClinicalStatus    @default(ACTIVE)
+  verificationStatus  SafetyVerificationStatus @default(UNVERIFIED)
+  source              SafetyRecordSource       @default(PATIENT_REPORTED)
+  verifiedAt          DateTime?
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+  user                User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  saltProfile         SaltProfile?             @relation(fields: [saltProfileId], references: [id], onDelete: SetNull)
+
+  @@index([userId, clinicalStatus])
+  @@index([userId, normalizedSubstance])
+  @@index([saltProfileId])
+  @@map("allergy_intolerances")
+}
+
+model MedicationSafetyFinding {
+  id                 String                            @id @default(cuid())
+  userId             String
+  fingerprint        String                            @unique
+  rule               MedicationSafetyRule
+  severity           MedicationSafetySeverity
+  status             MedicationSafetyFindingStatus     @default(OPEN)
+  title              String
+  summary            String
+  triggerIngredients Json
+  evidence           Json
+  sourceRefs         Json?
+  firstDetectedAt    DateTime                          @default(now())
+  lastDetectedAt     DateTime                          @default(now())
+  acknowledgedAt     DateTime?
+  resolvedAt         DateTime?
+  resolutionReason   String?
+  createdAt          DateTime                          @default(now())
+  updatedAt          DateTime                          @updatedAt
+  user               User                              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medicines          MedicationSafetyFindingMedicine[]
+
+  @@index([userId, status, severity])
+  @@index([userId, rule])
+  @@map("medication_safety_findings")
+}
+
+model MedicationSafetyFindingMedicine {
+  findingId  String
+  medicineId String
+  finding    MedicationSafetyFinding @relation(fields: [findingId], references: [id], onDelete: Cascade)
+  medicine   Medicine                @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+
+  @@id([findingId, medicineId])
+  @@index([medicineId])
+  @@map("medication_safety_finding_medicines")
+}
+
+enum SafetyConditionStatus {
+  UNKNOWN
+  NO
+  YES
+  NOT_APPLICABLE
+}
+
+enum SafetyRecordSource {
+  PATIENT_REPORTED
+  CAREGIVER_REPORTED
+  CLINICIAN
+  ADMIN
+  IMPORT
+}
+
+enum SafetyVerificationStatus {
+  UNVERIFIED
+  CONFIRMED
+  REFUTED
+  ENTERED_IN_ERROR
+}
+
+enum AllergyCategory {
+  ALLERGY
+  INTOLERANCE
+}
+
+enum AllergyCriticality {
+  LOW
+  HIGH
+  UNABLE_TO_ASSESS
+}
+
+enum AllergyClinicalStatus {
+  ACTIVE
+  INACTIVE
+  RESOLVED
+  ENTERED_IN_ERROR
+}
+
+enum MedicationSafetyRule {
+  EXACT_DUPLICATE
+  DUPLICATE_INGREDIENT
+  ALLERGY_CONFLICT
+  OVERLAPPING_SCHEDULE
+  UNKNOWN_COMPOSITION
+}
+
+enum MedicationSafetySeverity {
+  INFO
+  WARNING
+  HIGH
+}
+
+enum MedicationSafetyFindingStatus {
+  OPEN
+  ACKNOWLEDGED
+  RESOLVED
+  DISMISSED
+}
+
+model WebSourceAssistCache {
+  id            String      @id @default(cuid())
+  saltProfileId String
+  saltProfile   SaltProfile @relation(fields: [saltProfileId], references: [id], onDelete: Cascade)
+  query         String
+  queryHash     String      @unique
+  provider      String      @default("Tavily")
+  status        String      @default("SUCCESS")
+  result        Json
+  sourceCount   Int         @default(0)
+  evidenceCount Int         @default(0)
+  draftedFields Json?
+  warnings      Json?
+  lastError     String?
+  searchedAt    DateTime    @default(now())
+  expiresAt     DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([saltProfileId, searchedAt])
+  @@index([saltProfileId, expiresAt])
+  @@index([status, searchedAt])
+  @@map("web_source_assist_cache")
+}
+
+model PatientExplanation {
+  id                  String                   @id @default(cuid())
+  saltProfileId       String
+  saltProfile         SaltProfile              @relation(fields: [saltProfileId], references: [id], onDelete: Cascade)
+  language            String                   @default("en")
+  whyPrescribed       String?
+  howToTake           String?
+  sideEffects         Json?
+  warnings            String?
+  storage             String?
+  sourceRefs          Json?
+  unsafeOmittedFields Json?
+  status              PatientExplanationStatus @default(NEEDS_SOURCE)
+  generatedBy         String?
+  modelVersion        String?
+  reviewedAt          DateTime?
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+
+  @@unique([saltProfileId, language])
+  @@index([language, status])
+  @@index([status, updatedAt])
+  @@map("patient_explanations")
+}
+
+model MedicinePackage {
+  id              String                 @id @default(cuid())
+  medicineId      String
+  medicine        MedicineMaster         @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  gtin            String?                @unique
+  barcodeType     String?
+  packSize        String?
+  stripImageUrl   String?
+  pillImageUrl    String?
+  mrpPrice        Decimal?               @db.Decimal(10, 2)
+  priceCurrency   String                 @default("INR")
+  priceSource     String?
+  priceLastSeenAt DateTime?
+  isDemo          Boolean                @default(false)
+  isVerified      Boolean                @default(false)
+  source          RecordSource           @default(IMPORT)
+  verifiedAt      DateTime?
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  userMedicines   Medicine[]
+  purchaseLinks   MedicinePurchaseLink[]
+  reviewItems     MedicineDataReview[]
+
+  @@index([medicineId])
+  @@index([gtin])
+  @@index([isDemo])
+  @@map("medicine_packages")
+}
+
+model MedicinePurchaseLink {
+  id                String           @id @default(cuid())
+  medicineMasterId  String
+  medicineMaster    MedicineMaster   @relation(fields: [medicineMasterId], references: [id], onDelete: Cascade)
+  medicinePackageId String?
+  medicinePackage   MedicinePackage? @relation(fields: [medicinePackageId], references: [id], onDelete: SetNull)
+  provider          String
+  productUrl        String
+  providerProductId String?
+  isVerified        Boolean          @default(false)
+  isActive          Boolean          @default(true)
+  source            RecordSource     @default(IMPORT)
+  verifiedAt        DateTime?
+  lastCheckedAt     DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@unique([provider, productUrl])
+  @@index([medicineMasterId, isActive, isVerified])
+  @@index([medicinePackageId, isActive, isVerified])
+  @@index([provider, providerProductId])
+  @@map("medicine_purchase_links")
+}
+
+model MedicineDataReview {
+  id                String               @id @default(cuid())
+  type              MedicineReviewType
+  status            MedicineReviewStatus @default(OPEN)
+  submittedById     String?
+  reviewedById      String?
+  medicineMasterId  String?
+  medicinePackageId String?
+  saltProfileId     String?
+  normalizedKey     String?              @unique
+  source            MedSource?
+  strength          String?
+  form              MedicineForm?
+  rawName           String?
+  gtin              String?
+  userStripImageUrl String?
+  billLine          String?
+  demandCount       Int                  @default(1)
+  payload           Json?
+  notes             String?
+  adminNotes        String?
+  reviewedAt        DateTime?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+
+  submittedBy     User?            @relation("MedicineReviewSubmittedBy", fields: [submittedById], references: [id], onDelete: SetNull)
+  reviewedBy      User?            @relation("MedicineReviewReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
+  medicineMaster  MedicineMaster?  @relation(fields: [medicineMasterId], references: [id], onDelete: SetNull)
+  medicinePackage MedicinePackage? @relation(fields: [medicinePackageId], references: [id], onDelete: SetNull)
+  saltProfile     SaltProfile?     @relation(fields: [saltProfileId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([type, status])
+  @@index([submittedById])
+  @@index([reviewedById])
+  @@index([medicineMasterId])
+  @@index([medicinePackageId])
+  @@index([saltProfileId])
+  @@index([normalizedKey])
+  @@index([source, status])
+  @@index([gtin])
+  @@map("medicine_data_reviews")
+}
+
+model MedicineImportBatch {
+  id               String                     @id @default(cuid())
+  uploadedById     String?
+  uploadedBy       User?                      @relation("MedicineImportUploadedBy", fields: [uploadedById], references: [id], onDelete: SetNull)
+  originalFileName String?
+  storedPath       String?
+  datasetName      String?
+  datasetVersion   String?
+  source           RecordSource               @default(IMPORT)
+  status           MedicineImportStatus       @default(STAGED)
+  totalRows        Int                        @default(0)
+  validRows        Int                        @default(0)
+  invalidRows      Int                        @default(0)
+  duplicateRows    Int                        @default(0)
+  createRows       Int                        @default(0)
+  updateRows       Int                        @default(0)
+  saltsToCreate    Int                        @default(0)
+  saltsToReuse     Int                        @default(0)
+  committedRows    Int                        @default(0)
+  skippedRows      Int                        @default(0)
+  report           Json?
+  committedAt      DateTime?
+  createdAt        DateTime                   @default(now())
+  updatedAt        DateTime                   @updatedAt
+  rows             MedicineImportStagingRow[]
+
+  @@index([uploadedById])
+  @@index([status, createdAt])
+  @@map("medicine_import_batches")
+}
+
+model MedicineImportStagingRow {
+  id                        String                  @id @default(cuid())
+  importBatchId             String
+  importBatch               MedicineImportBatch     @relation(fields: [importBatchId], references: [id], onDelete: Cascade)
+  rowNumber                 Int
+  action                    MedicineImportRowAction @default(INVALID)
+  raw                       Json
+  normalized                Json?
+  brandName                 String?
+  normalizedName            String?
+  genericName               String?
+  composition               String?
+  manufacturer              String?
+  strength                  String?
+  type                      String?
+  isDiscontinued            Boolean                 @default(false)
+  prescriptionRequired      Boolean?
+  packSize                  String?
+  gtin                      String?
+  stripImageUrl             String?
+  pillImageUrl              String?
+  mrpPrice                  Decimal?                @db.Decimal(10, 2)
+  priceCurrency             String?
+  priceSource               String?
+  saltKey                   String?
+  saltDisplayName           String?
+  ingredients               Json?
+  dedupeKey                 String?
+  validationErrors          String[]                @default([])
+  warnings                  String[]                @default([])
+  duplicateInFile           Boolean                 @default(false)
+  existingMedicineMasterId  String?
+  existingSaltProfileId     String?
+  committedMedicineMasterId String?
+  committedSaltProfileId    String?
+  committedPackageId        String?
+  committedAt               DateTime?
+  createdAt                 DateTime                @default(now())
+  updatedAt                 DateTime                @updatedAt
+
+  @@unique([importBatchId, rowNumber])
+  @@index([importBatchId, action])
+  @@index([importBatchId, dedupeKey])
+  @@index([importBatchId, saltKey])
+  @@map("medicine_import_staging_rows")
+}
+
+enum MedicineReviewType {
+  UNKNOWN_MANUAL
+  UNKNOWN_BARCODE
+  MISSING_IMAGE
+  LOW_CONFIDENCE_MATCH
+  MISSING_CLINICAL_DETAILS
+}
+
+enum MedicineReviewStatus {
+  OPEN
+  LINKED
+  VERIFIED
+  REJECTED
+}
+
+enum MedicineImportStatus {
+  STAGED
+  COMMITTING
+  COMMITTED
+  DISCARDED
+  FAILED
+}
+
+enum MedicineImportRowAction {
+  CREATE
+  UPDATE
+  DUPLICATE_IN_FILE
+  INVALID
+  NOOP
+}
+
+enum RecordSource {
+  IMPORT
+  ADMIN
+  ENRICHMENT
+  USER
+}
+
+enum PatientExplanationStatus {
+  NEEDS_SOURCE
+  GENERATED
+  REVIEW_REQUIRED
+  REVIEWED
+}
+
+enum EnrichmentStatus {
+  NEEDS_SOURCE
+  PARTIAL
+  COMPLETE
+}
+
+model MedicineCorrection {
+  id               String   @id @default(cuid())
+  userId           String
+  rawExtractedName String
+  correctedName    String
+  count            Int      @default(1)
+  lastUsed         DateTime @default(now())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, rawExtractedName])
+  @@index([rawExtractedName])
+  @@map("medicine_corrections")
+}

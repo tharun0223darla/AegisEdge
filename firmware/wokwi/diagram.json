@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "author": "medi_nexus (AegisEdge)",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "board-ssd1306",
+      "id": "oled",
+      "top": -160,
+      "left": 10,
+      "attrs": { "i2cAddress": "0x3c" }
+    },
+    { "type": "wokwi-dht22", "id": "dht", "top": -140, "left": 230, "attrs": {} },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot_pm25",
+      "top": 120,
+      "left": -170,
+      "attrs": { "label": "Laser PM2.5 (SPS30)" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot_spo2",
+      "top": 240,
+      "left": -170,
+      "attrs": { "label": "SpO2 / Vitals" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_sos",
+      "top": 250,
+      "left": 220,
+      "attrs": { "color": "red", "label": "Flood/SOS" }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "buzzer",
+      "top": 140,
+      "left": 230,
+      "attrs": { "volume": "0.5" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_green",
+      "top": -70,
+      "left": -90,
+      "attrs": { "color": "green", "label": "Duty-Cycle" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_red",
+      "top": -70,
+      "left": -40,
+      "attrs": { "color": "red", "label": "LoRa Mesh SOS" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serial:RX", "", [] ],
+    [ "esp:RX", "$serial:TX", "", [] ],
+    [ "esp:GND.1", "oled:GND", "black", [ "v0" ] ],
+    [ "esp:3V3", "oled:VCC", "red", [ "v0" ] ],
+    [ "esp:22", "oled:SCL", "yellow", [ "v0" ] ],
+    [ "esp:21", "oled:SDA", "blue", [ "v0" ] ],
+    [ "esp:GND.2", "dht:GND", "black", [ "v0" ] ],
+    [ "esp:3V3", "dht:VCC", "red", [ "v0" ] ],
+    [ "esp:4", "dht:SDA", "orange", [ "v0" ] ],
+    [ "esp:GND.1", "pot_pm25:GND", "black", [ "v0" ] ],
+    [ "esp:3V3", "pot_pm25:VCC", "red", [ "v0" ] ],
+    [ "esp:34", "pot_pm25:SIG", "purple", [ "v0" ] ],
+    [ "esp:GND.1", "pot_spo2:GND", "black", [ "v0" ] ],
+    [ "esp:3V3", "pot_spo2:VCC", "red", [ "v0" ] ],
+    [ "esp:35", "pot_spo2:SIG", "cyan", [ "v0" ] ],
+    [ "esp:GND.2", "btn_sos:1.l", "black", [ "v0" ] ],
+    [ "esp:18", "btn_sos:2.l", "green", [ "v0" ] ],
+    [ "esp:GND.2", "buzzer:1", "black", [ "v0" ] ],
+    [ "esp:19", "buzzer:2", "magenta", [ "v0" ] ],
+    [ "esp:GND.1", "led_green:C", "black", [ "v0" ] ],
+    [ "esp:25", "led_green:A", "green", [ "v0" ] ],
+    [ "esp:GND.1", "led_red:C", "black", [ "v0" ] ],
+    [ "esp:26", "led_red:A", "red", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}

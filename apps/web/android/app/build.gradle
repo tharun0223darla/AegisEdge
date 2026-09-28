@@ -1,0 +1,162 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+def releaseKeystorePath = System.getenv('ANDROID_KEYSTORE_PATH')
+def releaseKeystorePassword = System.getenv('ANDROID_KEYSTORE_PASSWORD')
+def releaseKeyAlias = System.getenv('ANDROID_KEY_ALIAS')
+def releaseKeyPassword = System.getenv('ANDROID_KEY_PASSWORD')
+def releaseSigningConfigured = [
+    releaseKeystorePath,
+    releaseKeystorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword
+].every { value -> value != null && !value.trim().isEmpty() }
+
+def readRequiredPositiveInt = { String name, String fallback ->
+    def raw = System.getenv(name) ?: fallback
+    try {
+        def parsed = Integer.parseInt(raw)
+        if (parsed <= 0) {
+            throw new GradleException("${name} must be a positive integer.")
+        }
+        return parsed
+    } catch (NumberFormatException ignored) {
+        throw new GradleException("${name} must be a positive integer.")
+    }
+}
+def repoRoot = rootProject.projectDir.parentFile.parentFile.parentFile
+def runGit = { List<String> arguments, String fallback ->
+    try {
+        def command = ['git'] + arguments
+        def process = new ProcessBuilder(command)
+            .directory(repoRoot)
+            .redirectErrorStream(true)
+            .start()
+        def output = process.inputStream.getText('UTF-8').trim()
+        return process.waitFor() == 0 && !output.isEmpty() ? output : fallback
+    } catch (Exception ignored) {
+        return fallback
+    }
+}
+def androidVersionCode = readRequiredPositiveInt('ANDROID_VERSION_CODE', '1')
+def androidVersionName = System.getenv('ANDROID_VERSION_NAME') ?: '1.0.0-dev'
+def gitCommitSha =
+    System.getenv('GIT_COMMIT_SHA') ?: runGit(['rev-parse', '--short=12', 'HEAD'], 'unknown')
+def gitWorktreeDirty =
+    (System.getenv('GIT_WORKTREE_DIRTY') ?: (
+        runGit(['status', '--porcelain', '--untracked-files=no'], '').isEmpty() ? 'false' : 'true'
+    )).toBoolean()
+def escapedGitCommitSha = gitCommitSha.replace('\\', '\\\\').replace('"', '\\"')
+def releaseMetadataConfigured = ['ANDROID_VERSION_CODE', 'ANDROID_VERSION_NAME', 'GIT_COMMIT_SHA']
+    .every { name -> System.getenv(name)?.trim() }
+
+android {
+    namespace "com.meditrack.ai"
+
+    signingConfigs {
+        release {
+            if (releaseSigningConfigured) {
+                storeFile file(releaseKeystorePath)
+                storePassword releaseKeystorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
+    }
+    compileSdk rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "com.meditrack.ai"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode androidVersionCode
+        versionName androidVersionName
+        buildConfigField "String", "GIT_COMMIT_SHA", "\"${escapedGitCommitSha}\""
+        buildConfigField "boolean", "BUILD_DIRTY", gitWorktreeDirty.toString()
+        manifestPlaceholders = [usesCleartextTraffic: "false"]
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    buildFeatures {
+        buildConfig true
+    }
+    buildTypes {
+        debug {
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
+        }
+        release {
+            manifestPlaceholders = [usesCleartextTraffic: "false"]
+            if (releaseSigningConfigured) {
+                signingConfig signingConfigs.release
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    // Bundled ML Kit model: printed medicine text works immediately and offline.
+    implementation 'com.google.mlkit:text-recognition:16.0.1'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    implementation "androidx.health.connect:connect-client:1.1.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0"
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+tasks.register('verifyBundledApiUrl', Exec) {
+    workingDir rootProject.projectDir.parentFile
+    commandLine(
+        System.getenv('NODE_BINARY') ?: 'node',
+        new File(rootProject.projectDir, '../../../tools/verify-android-api-bundle.mjs').absolutePath,
+        '--android-assets'
+    )
+}
+
+preBuild.dependsOn verifyBundledApiUrl
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
+gradle.taskGraph.whenReady { graph ->
+    def buildsReleaseArtifact = graph.allTasks.any { task ->
+        task.project == project && (task.name == 'assembleRelease' || task.name == 'bundleRelease')
+    }
+    if (buildsReleaseArtifact) {
+        if (!releaseSigningConfigured) {
+            throw new GradleException(
+                'Release signing is not configured. Set ANDROID_KEYSTORE_PATH, ' +
+                'ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, and ANDROID_KEY_PASSWORD.'
+            )
+        }
+        if (!releaseMetadataConfigured) {
+            throw new GradleException(
+                'Release metadata is not configured. Set ANDROID_VERSION_CODE, ' +
+                'ANDROID_VERSION_NAME, and GIT_COMMIT_SHA.'
+            )
+        }
+    }
+}

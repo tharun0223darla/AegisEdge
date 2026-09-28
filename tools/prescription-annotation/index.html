@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Medicine Box Annotator</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f8fa;
+        --panel: #ffffff;
+        --ink: #18202a;
+        --muted: #657181;
+        --line: #d8dee8;
+        --accent: #1769aa;
+        --accent-strong: #0f4f83;
+        --danger: #ba1a1a;
+        --box: #10b981;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      button,
+      select,
+      input {
+        font: inherit;
+      }
+
+      .shell {
+        display: grid;
+        grid-template-columns: minmax(220px, 300px) 1fr 300px;
+        min-height: 100vh;
+      }
+
+      aside,
+      main,
+      .inspector {
+        min-width: 0;
+      }
+
+      aside,
+      .inspector {
+        background: var(--panel);
+        border-right: 1px solid var(--line);
+        overflow: auto;
+      }
+
+      .inspector {
+        border-right: 0;
+        border-left: 1px solid var(--line);
+      }
+
+      .toolbar,
+      .side-header,
+      .inspector-header {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .toolbar {
+        justify-content: space-between;
+        background: var(--panel);
+      }
+
+      .toolbar-group {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .title {
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .button {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--ink);
+        border-radius: 6px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+
+      .button:hover {
+        border-color: #9eabb9;
+      }
+
+      .button.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .button.primary:hover {
+        background: var(--accent-strong);
+      }
+
+      .button.danger {
+        color: var(--danger);
+      }
+
+      select,
+      input[type="search"] {
+        min-height: 36px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 6px 8px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .image-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .image-list button {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 6px;
+        width: 100%;
+        padding: 10px 12px;
+        text-align: left;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+      }
+
+      .image-list button.active {
+        background: #eaf3fb;
+        box-shadow: inset 3px 0 0 var(--accent);
+      }
+
+      .split {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .status {
+        align-self: start;
+        border-radius: 999px;
+        background: #eef1f5;
+        color: var(--muted);
+        font-size: 12px;
+        padding: 2px 8px;
+      }
+
+      .status.reviewed {
+        background: #dff7ec;
+        color: #096c47;
+      }
+
+      main {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+      }
+
+      .canvas-wrap {
+        position: relative;
+        overflow: auto;
+        padding: 16px;
+      }
+
+      canvas {
+        display: block;
+        max-width: none;
+        background: #fff;
+        border: 1px solid var(--line);
+      }
+
+      .box-list {
+        padding: 12px;
+      }
+
+      .box-editor {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .box-editor label {
+        display: grid;
+        gap: 4px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .box-editor input,
+      .box-editor select {
+        width: 100%;
+      }
+
+      .box-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        margin-bottom: 8px;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .box-row.selected {
+        border-color: var(--box);
+        box-shadow: 0 0 0 2px rgb(16 185 129 / 15%);
+      }
+
+      .help {
+        padding: 12px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      @media (max-width: 1100px) {
+        .shell {
+          grid-template-columns: 240px 1fr;
+        }
+
+        .inspector {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside>
+        <div class="side-header">
+          <div>
+            <div class="title">Medicine Boxes</div>
+            <div class="muted" id="datasetSummary">Loading dataset...</div>
+          </div>
+        </div>
+        <div class="side-header">
+          <select id="splitFilter" aria-label="Split filter">
+            <option value="all">All splits</option>
+            <option value="train">Train</option>
+            <option value="val">Val</option>
+            <option value="test">Test</option>
+          </select>
+          <select id="statusFilter" aria-label="Status filter">
+            <option value="all">All status</option>
+            <option value="todo">Todo</option>
+            <option value="reviewed">Reviewed</option>
+          </select>
+        </div>
+        <ul class="image-list" id="imageList"></ul>
+      </aside>
+
+      <main>
+        <div class="toolbar">
+          <div class="toolbar-group">
+            <button class="button" id="prevButton">Prev</button>
+            <button class="button" id="nextButton">Next</button>
+            <label class="muted">
+              <input id="prelabelToggle" type="checkbox" />
+              Show prelabels
+            </label>
+            <button class="button" id="acceptPrelabelsButton">Accept Prelabels</button>
+            <span id="currentImage" class="muted"></span>
+          </div>
+          <div class="toolbar-group">
+            <button class="button danger" id="deleteButton">Delete box</button>
+            <button class="button primary" id="saveButton">Save reviewed</button>
+            <button class="button" id="exportButton">Export YOLO</button>
+            <button class="button" id="exportQwenButton">Export Qwen Crops</button>
+          </div>
+        </div>
+        <div class="canvas-wrap" id="canvasWrap">
+          <canvas id="canvas"></canvas>
+        </div>
+      </main>
+
+      <section class="inspector">
+        <div class="inspector-header">
+          <div>
+            <div class="title">Boxes</div>
+            <div class="muted" id="boxSummary">0 boxes</div>
+          </div>
+        </div>
+        <div class="box-editor">
+          <label>
+            Box type
+            <select id="boxLabel">
+              <option value="medicine_name">Medicine name</option>
+              <option value="signature">Signature</option>
+              <option value="advice">Advice / instruction</option>
+              <option value="patient_detail">Patient detail</option>
+              <option value="vitals">Vitals / BP / temperature</option>
+              <option value="stamp">Stamp / hospital text</option>
+              <option value="unreadable">Unreadable non-medicine</option>
+              <option value="other">Other non-medicine</option>
+            </select>
+          </label>
+          <label>
+            Medicine name
+            <input id="medicineName" placeholder="e.g. Remdesivir" />
+          </label>
+          <label>
+            Notes
+            <input id="boxNotes" placeholder="optional" />
+          </label>
+        </div>
+        <div class="box-list" id="boxList"></div>
+        <div class="help">
+          Draw one tight box around each medicine name and type the visible medicine text.
+          For signatures, advice, vitals, stamps, and patient details that Qwen often mistakes
+          for medicines, draw a box and mark the matching non-medicine type. YOLO export ignores
+          non-medicine boxes; Qwen crop export uses them as hard negatives.
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const imageList = document.getElementById("imageList");
+      const boxList = document.getElementById("boxList");
+      const splitFilter = document.getElementById("splitFilter");
+      const statusFilter = document.getElementById("statusFilter");
+      const prelabelToggle = document.getElementById("prelabelToggle");
+      const datasetSummary = document.getElementById("datasetSummary");
+      const currentImageLabel = document.getElementById("currentImage");
+      const boxSummary = document.getElementById("boxSummary");
+      const boxLabel = document.getElementById("boxLabel");
+      const medicineName = document.getElementById("medicineName");
+      const boxNotes = document.getElementById("boxNotes");
+
+      let dataset = null;
+      let images = [];
+      let currentIndex = 0;
+      let imageElement = new Image();
+      let boxes = [];
+      let selectedBox = -1;
+      let dragStart = null;
+      let draftBox = null;
+
+      function statusFor(imageId) {
+        return dataset.annotations.image_statuses?.[String(imageId)]?.status || "todo";
+      }
+
+      function filteredImages() {
+        return images.filter((image) => {
+          const splitOk = splitFilter.value === "all" || image.split === splitFilter.value;
+          const statusOk = statusFilter.value === "all" || statusFor(image.id) === statusFilter.value;
+          return splitOk && statusOk;
+        });
+      }
+
+      function annotationsFor(imageId) {
+        const reviewed = dataset.annotations.annotations
+          .filter((annotation) => Number(annotation.image_id) === Number(imageId))
+          .map((annotation) => ({
+            x: annotation.bbox[0],
+            y: annotation.bbox[1],
+            width: annotation.bbox[2],
+            height: annotation.bbox[3],
+            label: annotation.attributes?.label || "medicine_name",
+            medicineName: annotation.attributes?.medicine_name || "",
+            notes: annotation.attributes?.notes || "",
+          }));
+
+        if (reviewed.length || !prelabelToggle.checked || !dataset.prelabels?.annotations) {
+          return reviewed;
+        }
+
+        return prelabelsFor(imageId);
+      }
+
+      function prelabelsFor(imageId) {
+        if (!dataset.prelabels?.annotations) {
+          return [];
+        }
+
+        return dataset.prelabels.annotations
+          .filter((annotation) => Number(annotation.image_id) === Number(imageId))
+          .map((annotation) => ({
+            x: annotation.bbox[0],
+            y: annotation.bbox[1],
+            width: annotation.bbox[2],
+            height: annotation.bbox[3],
+            label: annotation.attributes?.label || "medicine_name",
+            medicineName: annotation.attributes?.medicine_name || "",
+            notes: "geometry prelabel",
+          }));
+      }
+
+      function draw() {
+        if (!imageElement.complete || !imageElement.naturalWidth) {
+          return;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(imageElement, 0, 0);
+
+        boxes.forEach((box, index) => drawBox(box, index === selectedBox));
+        if (draftBox) {
+          drawBox(draftBox, true, true);
+        }
+      }
+
+      function drawBox(box, selected, draft = false) {
+        ctx.save();
+        const isMedicine = (box.label || "medicine_name") === "medicine_name";
+        ctx.strokeStyle = selected ? "#0f766e" : isMedicine ? "#10b981" : "#f97316";
+        ctx.lineWidth = selected ? 4 : 3;
+        ctx.setLineDash(draft ? [8, 6] : []);
+        ctx.strokeRect(box.x, box.y, box.width, box.height);
+        ctx.fillStyle = selected
+          ? "rgba(15, 118, 110, 0.16)"
+          : isMedicine
+            ? "rgba(16, 185, 129, 0.12)"
+            : "rgba(249, 115, 22, 0.12)";
+        ctx.fillRect(box.x, box.y, box.width, box.height);
+        const label = isMedicine && box.medicineName ? box.medicineName : box.label || "medicine_name";
+        if (label && !draft) {
+          ctx.font = "14px system-ui, sans-serif";
+          const metrics = ctx.measureText(label);
+          const textWidth = metrics.width + 10;
+          const textHeight = 22;
+          ctx.fillStyle = isMedicine ? "#047857" : "#c2410c";
+          ctx.fillRect(box.x, Math.max(0, box.y - textHeight), textWidth, textHeight);
+          ctx.fillStyle = "#fff";
+          ctx.fillText(label, box.x + 5, Math.max(15, box.y - 7));
+        }
+        ctx.restore();
+      }
+
+      function renderList() {
+        const visible = filteredImages();
+        imageList.innerHTML = "";
+
+        for (const image of visible) {
+          const button = document.createElement("button");
+          const status = statusFor(image.id);
+          button.className = image.id === images[currentIndex]?.id ? "active" : "";
+          button.innerHTML = `
+            <span>
+              <strong>${image.file_name}</strong>
+              <span class="split">${image.split}</span>
+            </span>
+            <span class="status ${status === "reviewed" ? "reviewed" : ""}">${status}</span>
+          `;
+          button.addEventListener("click", () => loadImage(images.findIndex((item) => item.id === image.id)));
+          imageList.appendChild(button);
+        }
+      }
+
+      function renderBoxes() {
+        boxList.innerHTML = "";
+        boxSummary.textContent = `${boxes.length} box${boxes.length === 1 ? "" : "es"}`;
+
+        boxes.forEach((box, index) => {
+          const row = document.createElement("div");
+          row.className = `box-row ${index === selectedBox ? "selected" : ""}`;
+          const label = box.label || "medicine_name";
+          const title = label === "medicine_name" && box.medicineName ? box.medicineName : label;
+          row.innerHTML = `
+            <span>
+              <strong>${title || "medicine_name"}</strong>
+              <span class="muted">${Math.round(box.x)}, ${Math.round(box.y)} | ${Math.round(box.width)} x ${Math.round(box.height)}</span>
+            </span>
+            <span class="muted">${label}</span>
+          `;
+          row.addEventListener("click", () => {
+            selectedBox = index;
+            renderEditor();
+            renderBoxes();
+            draw();
+          });
+          boxList.appendChild(row);
+        });
+
+        renderEditor();
+      }
+
+      function renderEditor() {
+        const box = boxes[selectedBox];
+        const hasSelection = Boolean(box);
+        boxLabel.disabled = !hasSelection;
+        medicineName.disabled = !hasSelection;
+        boxNotes.disabled = !hasSelection;
+
+        if (!box) {
+          boxLabel.value = "medicine_name";
+          medicineName.value = "";
+          boxNotes.value = "";
+          return;
+        }
+
+        box.label ||= "medicine_name";
+        box.medicineName ||= "";
+        box.notes ||= "";
+
+        boxLabel.value = box.label;
+        medicineName.value = box.medicineName;
+        medicineName.placeholder =
+          box.label === "medicine_name" ? "e.g. Remdesivir" : "leave blank for non-medicine";
+        boxNotes.value = box.notes;
+      }
+
+      function loadImage(index) {
+        if (index < 0 || index >= images.length) {
+          return;
+        }
+
+        currentIndex = index;
+        const image = images[currentIndex];
+        boxes = annotationsFor(image.id);
+        selectedBox = boxes.length ? 0 : -1;
+        imageElement = new Image();
+        imageElement.onload = () => {
+          canvas.width = imageElement.naturalWidth;
+          canvas.height = imageElement.naturalHeight;
+          currentImageLabel.textContent = `${image.file_name} | ${image.width} x ${image.height} | ${image.split}`;
+          renderList();
+          renderBoxes();
+          draw();
+        };
+        imageElement.src = `/images/${encodeURIComponent(image.file_name)}`;
+      }
+
+      function canvasPoint(event) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: Math.max(0, Math.min(canvas.width, event.clientX - rect.left)),
+          y: Math.max(0, Math.min(canvas.height, event.clientY - rect.top)),
+        };
+      }
+
+      canvas.addEventListener("mousedown", (event) => {
+        dragStart = canvasPoint(event);
+        draftBox = { x: dragStart.x, y: dragStart.y, width: 0, height: 0 };
+      });
+
+      canvas.addEventListener("mousemove", (event) => {
+        if (!dragStart) {
+          return;
+        }
+        const point = canvasPoint(event);
+        draftBox = {
+          x: Math.min(dragStart.x, point.x),
+          y: Math.min(dragStart.y, point.y),
+          width: Math.abs(point.x - dragStart.x),
+          height: Math.abs(point.y - dragStart.y),
+        };
+        draw();
+      });
+
+      canvas.addEventListener("mouseup", () => {
+        if (draftBox && draftBox.width >= 8 && draftBox.height >= 8) {
+          boxes.push({ ...draftBox, label: "medicine_name", medicineName: "", notes: "" });
+          selectedBox = boxes.length - 1;
+        }
+        dragStart = null;
+        draftBox = null;
+        renderBoxes();
+        draw();
+      });
+
+      async function saveCurrent() {
+        const image = images[currentIndex];
+        const response = await fetch(`/api/annotations/${image.id}`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ boxes }),
+        });
+
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          throw new Error(payload.error || "Save failed");
+        }
+
+        dataset.annotations.image_statuses ||= {};
+        dataset.annotations.image_statuses[String(image.id)] = {
+          status: "reviewed",
+          box_count: boxes.length,
+          updated_at: new Date().toISOString(),
+        };
+        dataset.annotations.annotations = dataset.annotations.annotations.filter(
+          (annotation) => Number(annotation.image_id) !== Number(image.id),
+        );
+        boxes.forEach((box, index) => {
+          const label = box.label || "medicine_name";
+          dataset.annotations.annotations.push({
+            id: Date.now() + index,
+            image_id: image.id,
+            category_id: label === "medicine_name" ? 1 : 2,
+            bbox: [box.x, box.y, box.width, box.height],
+            area: box.width * box.height,
+            iscrowd: 0,
+            attributes: {
+              label,
+              medicine_name: box.medicineName || "",
+              notes: box.notes || "",
+            },
+          });
+        });
+        renderList();
+      }
+
+      document.getElementById("saveButton").addEventListener("click", async () => {
+        await saveCurrent();
+      });
+
+      document.getElementById("deleteButton").addEventListener("click", () => {
+        if (selectedBox >= 0) {
+          boxes.splice(selectedBox, 1);
+          selectedBox = Math.min(selectedBox, boxes.length - 1);
+          renderBoxes();
+          draw();
+        }
+      });
+
+      document.getElementById("acceptPrelabelsButton").addEventListener("click", () => {
+        const image = images[currentIndex];
+        const prelabels = prelabelsFor(image.id);
+
+        if (!prelabels.length) {
+          alert("No raw auto labels found for this image.");
+          return;
+        }
+
+        boxes = prelabels.map((box) => ({ ...box }));
+        selectedBox = boxes.length ? 0 : -1;
+        renderBoxes();
+        draw();
+      });
+
+      boxLabel.addEventListener("change", () => {
+        if (selectedBox < 0 || !boxes[selectedBox]) {
+          return;
+        }
+
+        boxes[selectedBox].label = boxLabel.value;
+
+        if (boxLabel.value !== "medicine_name") {
+          boxes[selectedBox].medicineName = "";
+        }
+
+        renderBoxes();
+        draw();
+      });
+
+      medicineName.addEventListener("input", () => {
+        if (selectedBox < 0 || !boxes[selectedBox]) {
+          return;
+        }
+
+        boxes[selectedBox].medicineName = medicineName.value;
+        renderBoxes();
+        draw();
+      });
+
+      boxNotes.addEventListener("input", () => {
+        if (selectedBox < 0 || !boxes[selectedBox]) {
+          return;
+        }
+
+        boxes[selectedBox].notes = boxNotes.value;
+      });
+
+      document.getElementById("prevButton").addEventListener("click", () => loadImage(currentIndex - 1));
+      document.getElementById("nextButton").addEventListener("click", () => loadImage(currentIndex + 1));
+
+      document.getElementById("exportButton").addEventListener("click", async () => {
+        const response = await fetch("/api/export-yolo", { method: "POST" });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload.error || "Export failed");
+        }
+        alert(`YOLO export written to:\n${payload.outputDir}`);
+      });
+
+      document.getElementById("exportQwenButton").addEventListener("click", async () => {
+        const response = await fetch("/api/export-qwen", { method: "POST" });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload.error || "Export failed");
+        }
+        alert(
+          [
+            "Qwen crop export written to:",
+            payload.outputDir,
+            "",
+            `medicine crops: ${payload.counts?.medicine || 0}`,
+            `hard negatives: ${payload.counts?.negative || 0}`,
+            `skipped medicine boxes without names: ${payload.counts?.skipped_positive_without_name || 0}`,
+          ].join("\n"),
+        );
+      });
+
+      splitFilter.addEventListener("change", renderList);
+      statusFilter.addEventListener("change", renderList);
+      prelabelToggle.addEventListener("change", () => loadImage(currentIndex));
+
+      window.addEventListener("keydown", async (event) => {
+        if (event.key === "Delete" || event.key === "Backspace") {
+          document.getElementById("deleteButton").click();
+        }
+        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
+          event.preventDefault();
+          await saveCurrent();
+        }
+        if (event.key === "ArrowRight") {
+          loadImage(currentIndex + 1);
+        }
+        if (event.key === "ArrowLeft") {
+          loadImage(currentIndex - 1);
+        }
+      });
+
+      async function init() {
+        const response = await fetch("/api/dataset");
+        dataset = await response.json();
+        images = dataset.manifest.images;
+        const counts = images.reduce((acc, image) => {
+          acc[image.split] = (acc[image.split] || 0) + 1;
+          return acc;
+        }, {});
+        datasetSummary.textContent = `${images.length} images | ${counts.train || 0}/${counts.val || 0}/${counts.test || 0}`;
+        renderList();
+        loadImage(0);
+      }
+
+      init().catch((error) => {
+        datasetSummary.textContent = error.message;
+      });
+    </script>
+  </body>
+</html>

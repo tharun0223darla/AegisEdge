@@ -1,0 +1,2 @@
+/* Entry stylesheet imported by main.tsx. Delegates to the canonical globals. */
+@import './styles/globals.css';

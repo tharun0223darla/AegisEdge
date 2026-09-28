@@ -1,0 +1,104 @@
+# compiled output
+/dist
+/node_modules
+/build
+uploads/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.smoke.local
+.env.local
+
+# temp directory
+.temp
+.tmp
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Local medical training data can contain PHI/PII. Keep it out of git.
+/datasets/prescription_medicine_detection/images/
+/datasets/prescription_medicine_detection/exports/
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+/generated/prisma
+
+# Tesseract trained data (download at build time, don't commit)
+*.traineddata
+
+# Debug / planning artifacts
+frontend-files.txt
+frontend-structure.txt
+web-files.txt
+/tmp/
+/output/
+# Production environment files and Android signing material
+.env.production
+.env.release
+apps/web/.env.production
+apps/web/.env.android
+apps/web/.env.release
+*.jks
+*.keystore
+apps/web/android/local.properties
+apps/web/android/app/release/
+# Generated language/build caches
+**/__pycache__/
+*.py[cod]
+*.tsbuildinfo
+
+# Local editor/manual backup copies
+*.bak
+*.backup
+
+# Rebuildable enrichment and licensed source datasets
+/data/enrichment-cache/
+/data/onemg2025_clean.csv
+
+# OCR diagnostic outputs (source code and curated fixtures remain tracked)
+/ocr-service/auto-row-crops*/
+/ocr-service/line-crops*/
+/ocr-service/medicine-row-output*/
+/ocr-service/vision-pipeline-output/
+/ocr-service/test-output/
+/ocr-service/medicine-region.jpg

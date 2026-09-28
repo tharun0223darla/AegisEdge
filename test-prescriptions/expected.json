@@ -1,0 +1,83 @@
+[
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions\\case_01_clean_printed.png",
+    "expected_medicines": [
+      "Amoxicillin",
+      "Omeprazole",
+      "Dolo",
+      "Cetirizine"
+    ],
+    "notes": [
+      "Should exclude advice line"
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions\\case_02_ortho_traps.png",
+    "expected_medicines": [
+      "Ultrafen-plus",
+      "Relentus",
+      "Pregntooz",
+      "Ultracal-D",
+      "Cartilox",
+      "Diclofenac",
+      "Omeprazole"
+    ],
+    "notes": [
+      "Should exclude Knee cap",
+      "Should exclude physiotherapy + exercise"
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions\\case_03_two_column.png",
+    "expected_medicines": [
+      "Metformin XR",
+      "Telmisartan",
+      "Atorvastatin",
+      "Aspirin",
+      "Pantoprazole DSR",
+      "Calcium D3"
+    ],
+    "notes": [
+      "Two columns",
+      "Should exclude diet/walking advice"
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions\\case_04_pediatric_syrups.png",
+    "expected_medicines": [
+      "Paracetamol",
+      "Azithral",
+      "Ambroxol-LS",
+      "Budecort"
+    ],
+    "notes": [
+      "May or may not include ORS depending policy",
+      "Should exclude steam inhalation"
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions\\case_05_drops_creams.png",
+    "expected_medicines": [
+      "Moxifloxacin",
+      "Carboxymethylcellulose",
+      "Clotrimazole",
+      "Levocetirizine"
+    ],
+    "notes": [
+      "Should exclude review/advice lines"
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions\\case_06_noisy_rotated.png",
+    "expected_medicines": [
+      "Fexofenadine",
+      "Montelukast-LC",
+      "Pregabalin-M",
+      "Etoricoxib",
+      "Diclofenac"
+    ],
+    "notes": [
+      "Should exclude lumbar belt and exercise"
+    ]
+  }
+]

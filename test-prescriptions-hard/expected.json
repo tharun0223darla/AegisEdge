@@ -1,0 +1,77 @@
+[
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions-hard\\case_07_hard_cursive_ortho.png",
+    "expected_medicines": [
+      "Ultrafen-plus",
+      "Relentus",
+      "Pregntooz",
+      "Ultracal-D",
+      "Cartilox",
+      "Diclofenac",
+      "Omeprazole"
+    ],
+    "expected_exclusions": [
+      "Knee cap",
+      "Physiotherapy",
+      "exercise"
+    ],
+    "notes": [
+      "Hard version of the current failure mode with vitals/history clutter."
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions-hard\\case_08_hard_two_column_clutter.png",
+    "expected_medicines": [
+      "Metformin XR",
+      "Telmisartan",
+      "Atorvastatin",
+      "Aspirin",
+      "Pantoprazole DSR",
+      "Neurobion Forte"
+    ],
+    "expected_exclusions": [
+      "Low salt diet",
+      "Walking",
+      "Review"
+    ],
+    "notes": [
+      "Two columns plus fake vitals/history text."
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions-hard\\case_09_hard_pediatric_clutter.png",
+    "expected_medicines": [
+      "Paracetamol",
+      "Azithral",
+      "Ambroxol-LS",
+      "Budecort",
+      "ORS"
+    ],
+    "expected_exclusions": [
+      "Steam inhalation",
+      "Review"
+    ],
+    "notes": [
+      "Pediatric vitals and history clutter."
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions-hard\\case_10_hard_mixed_forms_noise.png",
+    "expected_medicines": [
+      "Fexofenadine",
+      "Montelukast-LC",
+      "Pregabalin-M",
+      "Etoricoxib",
+      "Diclofenac"
+    ],
+    "expected_exclusions": [
+      "Lumbar belt",
+      "exercise",
+      "X-ray",
+      "Follow up"
+    ],
+    "notes": [
+      "Mixed forms, investigation row, device row, exercise row."
+    ]
+  }
+]

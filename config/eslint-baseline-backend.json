@@ -1,0 +1,777 @@
+{
+  "version": 1,
+  "project": "backend",
+  "violations": {
+    "src/ai-voice/ai-voice.controller.ts": {
+      "prettier/prettier": 6
+    },
+    "src/ai-voice/ai-voice.service.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 8,
+      "@typescript-eslint/no-unsafe-call": 9,
+      "@typescript-eslint/no-unsafe-member-access": 16,
+      "@typescript-eslint/no-unsafe-return": 4,
+      "@typescript-eslint/require-await": 1,
+      "prettier/prettier": 11
+    },
+    "src/ai/core-ai.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/no-unsafe-assignment": 4,
+      "@typescript-eslint/no-unsafe-call": 3,
+      "@typescript-eslint/no-unsafe-member-access": 12,
+      "@typescript-eslint/no-unsafe-return": 2,
+      "prettier/prettier": 9
+    },
+    "src/app.module.ts": {
+      "prettier/prettier": 1
+    },
+    "src/audit-logs/audit-logs.module.ts": {
+      "prettier/prettier": 2
+    },
+    "src/audit-logs/audit-logs.service.ts": {
+      "@typescript-eslint/no-redundant-type-constituents": 1,
+      "prettier/prettier": 1
+    },
+    "src/auth/auth.controller.ts": {
+      "prettier/prettier": 11
+    },
+    "src/auth/auth.module.ts": {
+      "prettier/prettier": 2
+    },
+    "src/auth/auth.service.ts": {
+      "prettier/prettier": 69
+    },
+    "src/auth/dto/login.dto.ts": {
+      "prettier/prettier": 4
+    },
+    "src/auth/dto/register.dto.ts": {
+      "prettier/prettier": 6
+    },
+    "src/auth/strategies/jwt.strategy.ts": {
+      "prettier/prettier": 9
+    },
+    "src/bills/bill-capture.service.spec.ts": {
+      "prettier/prettier": 1
+    },
+    "src/bills/bill-capture.service.ts": {
+      "prettier/prettier": 10
+    },
+    "src/bills/bills.controller.ts": {
+      "prettier/prettier": 33
+    },
+    "src/bills/bills.module.ts": {
+      "prettier/prettier": 10
+    },
+    "src/bills/bills.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 1,
+      "@typescript-eslint/no-unsafe-argument": 3,
+      "@typescript-eslint/no-unsafe-assignment": 23,
+      "@typescript-eslint/no-unsafe-call": 2,
+      "@typescript-eslint/no-unsafe-member-access": 25,
+      "@typescript-eslint/no-unsafe-return": 2,
+      "prettier/prettier": 420
+    },
+    "src/bills/dto/confirm-bill.dto.ts": {
+      "prettier/prettier": 65
+    },
+    "src/bills/dto/create-bill.dto.ts": {
+      "prettier/prettier": 3
+    },
+    "src/common/config/cors.config.ts": {
+      "@typescript-eslint/no-unused-vars": 1,
+      "prettier/prettier": 36
+    },
+    "src/common/decorators/current-user.decorator.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "@typescript-eslint/no-unsafe-member-access": 1,
+      "prettier/prettier": 2
+    },
+    "src/common/decorators/roles.decorator.ts": {
+      "prettier/prettier": 1
+    },
+    "src/common/enums/dosestatus.enum.ts": {
+      "prettier/prettier": 1
+    },
+    "src/common/enums/userrole.enum.ts": {
+      "prettier/prettier": 1
+    },
+    "src/common/filters/Httpexception.filter.ts": {
+      "@typescript-eslint/no-unsafe-enum-comparison": 1,
+      "prettier/prettier": 3
+    },
+    "src/common/guards/jwt-auth.guard.ts": {
+      "@typescript-eslint/no-unused-vars": 3,
+      "prettier/prettier": 2
+    },
+    "src/common/guards/origin.guard.ts": {
+      "prettier/prettier": 7
+    },
+    "src/common/guards/roles.guard.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "@typescript-eslint/no-unsafe-member-access": 1,
+      "prettier/prettier": 5
+    },
+    "src/common/guards/throttler-behind-proxy.guard.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "@typescript-eslint/no-unsafe-member-access": 2,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "@typescript-eslint/no-unused-vars": 1,
+      "@typescript-eslint/require-await": 1
+    },
+    "src/common/interceptors/response.interceptor.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "prettier/prettier": 3
+    },
+    "src/common/jobs/cleanup.service.ts": {
+      "prettier/prettier": 3
+    },
+    "src/common/logger/logger.module.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 5,
+      "@typescript-eslint/no-unsafe-member-access": 5,
+      "prettier/prettier": 3
+    },
+    "src/common/utils/file-upload.util.ts": {
+      "prettier/prettier": 15
+    },
+    "src/dashboard/dashboard.controller.ts": {
+      "@typescript-eslint/no-unused-vars": 2,
+      "prettier/prettier": 14
+    },
+    "src/dashboard/dashboard.module.ts": {
+      "prettier/prettier": 1
+    },
+    "src/dashboard/dashboard.service.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 2,
+      "prettier/prettier": 94
+    },
+    "src/devices/devices.controller.ts": {
+      "prettier/prettier": 3
+    },
+    "src/devices/devices.service.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 24,
+      "@typescript-eslint/no-unsafe-call": 6,
+      "@typescript-eslint/no-unsafe-member-access": 24,
+      "@typescript-eslint/no-unsafe-return": 3,
+      "@typescript-eslint/require-await": 2,
+      "prettier/prettier": 4
+    },
+    "src/devices/dto/register-device.dto.ts": {
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "prettier/prettier": 2
+    },
+    "src/devices/dto/sync-reading.dto.ts": {
+      "prettier/prettier": 1
+    },
+    "src/dose-logs/dose-logs.controller.ts": {
+      "prettier/prettier": 2
+    },
+    "src/dose-logs/dose-logs.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 3,
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/no-unsafe-assignment": 4,
+      "@typescript-eslint/no-unsafe-member-access": 2,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "prettier/prettier": 57
+    },
+    "src/dose-logs/dto/create-dose-log.dto.ts": {
+      "prettier/prettier": 1
+    },
+    "src/extraction/drug-normalizer.ts": {
+      "@typescript-eslint/no-require-imports": 1,
+      "@typescript-eslint/no-unsafe-assignment": 2,
+      "@typescript-eslint/no-unsafe-call": 3,
+      "@typescript-eslint/no-unsafe-member-access": 3,
+      "prettier/prettier": 4
+    },
+    "src/extraction/extraction.schema.ts": {
+      "prettier/prettier": 1
+    },
+    "src/extraction/extraction.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/no-unsafe-assignment": 3,
+      "@typescript-eslint/no-unsafe-member-access": 3,
+      "prettier/prettier": 6
+    },
+    "src/health-metrics/dto/create-health-metric.dto.ts": {
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "@typescript-eslint/no-unsafe-assignment": 3,
+      "@typescript-eslint/no-unsafe-member-access": 1,
+      "prettier/prettier": 3
+    },
+    "src/health-metrics/health-metrics.controller.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "prettier/prettier": 3
+    },
+    "src/health-metrics/health-metrics.service.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 4,
+      "@typescript-eslint/no-unsafe-call": 2,
+      "@typescript-eslint/no-unsafe-member-access": 7,
+      "@typescript-eslint/no-unsafe-return": 2,
+      "@typescript-eslint/require-await": 1,
+      "prettier/prettier": 9
+    },
+    "src/health/health.controller.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 1,
+      "prettier/prettier": 3
+    },
+    "src/health/health.module.ts": {
+      "prettier/prettier": 1
+    },
+    "src/health/indicators/prisma.health.ts": {
+      "prettier/prettier": 2
+    },
+    "src/main.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 2,
+      "@typescript-eslint/no-unsafe-assignment": 2,
+      "@typescript-eslint/no-unsafe-call": 6,
+      "@typescript-eslint/no-unsafe-member-access": 6,
+      "<fatal>": 1,
+      "prettier/prettier": 19
+    },
+    "src/medicines/capture/medicine-resolver.service.ts": {
+      "prettier/prettier": 1
+    },
+    "src/medicines/capture/package-image-capture.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 4,
+      "prettier/prettier": 10
+    },
+    "src/medicines/capture/package-image-capture.service.ts": {
+      "prettier/prettier": 43
+    },
+    "src/medicines/dto/admin-clinical-details.dto.ts": {
+      "prettier/prettier": 67
+    },
+    "src/medicines/dto/create-medicine.dto.ts": {
+      "prettier/prettier": 57
+    },
+    "src/medicines/dto/resolve-medicine-review.dto.ts": {
+      "prettier/prettier": 2
+    },
+    "src/medicines/enrichment/dailymed-label.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "prettier/prettier": 80
+    },
+    "src/medicines/enrichment/dailymed-label.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 1,
+      "@typescript-eslint/no-unsafe-assignment": 5,
+      "@typescript-eslint/no-unsafe-call": 1,
+      "@typescript-eslint/no-unsafe-member-access": 15,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "prettier/prettier": 338
+    },
+    "src/medicines/enrichment/ingredient-normalizer.spec.ts": {
+      "prettier/prettier": 10
+    },
+    "src/medicines/enrichment/ingredient-normalizer.ts": {
+      "prettier/prettier": 3
+    },
+    "src/medicines/enrichment/medicine-enrichment-queue.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 6,
+      "@typescript-eslint/no-unsafe-assignment": 2,
+      "@typescript-eslint/no-unsafe-member-access": 2,
+      "@typescript-eslint/require-await": 1,
+      "prettier/prettier": 122
+    },
+    "src/medicines/enrichment/medicine-enrichment-queue.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 3,
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "@typescript-eslint/no-unsafe-call": 1,
+      "@typescript-eslint/no-unsafe-member-access": 7,
+      "prettier/prettier": 112
+    },
+    "src/medicines/enrichment/medicine-enrichment.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "@typescript-eslint/no-unsafe-assignment": 15,
+      "@typescript-eslint/no-unsafe-call": 8,
+      "@typescript-eslint/no-unsafe-member-access": 24,
+      "prettier/prettier": 257
+    },
+    "src/medicines/enrichment/medicine-enrichment.types.ts": {
+      "@typescript-eslint/no-redundant-type-constituents": 7,
+      "prettier/prettier": 74
+    },
+    "src/medicines/enrichment/medlineplus-connect.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "prettier/prettier": 46
+    },
+    "src/medicines/enrichment/medlineplus-connect.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 1,
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "@typescript-eslint/no-unsafe-assignment": 9,
+      "@typescript-eslint/no-unsafe-call": 1,
+      "@typescript-eslint/no-unsafe-member-access": 22,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "prettier/prettier": 150
+    },
+    "src/medicines/enrichment/openfda-label.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "@typescript-eslint/no-unsafe-assignment": 2,
+      "prettier/prettier": 90
+    },
+    "src/medicines/enrichment/openfda-label.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 1,
+      "@typescript-eslint/no-unsafe-assignment": 7,
+      "@typescript-eslint/no-unsafe-member-access": 2,
+      "prettier/prettier": 9
+    },
+    "src/medicines/enrichment/rxnorm.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "prettier/prettier": 4
+    },
+    "src/medicines/enrichment/rxnorm.service.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 4,
+      "@typescript-eslint/no-unsafe-member-access": 1,
+      "prettier/prettier": 1
+    },
+    "src/medicines/enrichment/trusted-clinical-sources.ts": {
+      "@typescript-eslint/no-unsafe-member-access": 3,
+      "prettier/prettier": 3
+    },
+    "src/medicines/import/medicine-import.engine.spec.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 2,
+      "@typescript-eslint/no-unsafe-call": 2,
+      "@typescript-eslint/no-unsafe-member-access": 17
+    },
+    "src/medicines/import/medicine-import.engine.ts": {
+      "@typescript-eslint/no-base-to-string": 3,
+      "@typescript-eslint/no-unsafe-argument": 10,
+      "@typescript-eslint/no-unsafe-assignment": 107,
+      "@typescript-eslint/no-unsafe-call": 45,
+      "@typescript-eslint/no-unsafe-member-access": 196,
+      "@typescript-eslint/no-unsafe-return": 15,
+      "@typescript-eslint/require-await": 1,
+      "prefer-const": 1,
+      "prettier/prettier": 214
+    },
+    "src/medicines/import/medicine-master-merge.engine.ts": {
+      "@typescript-eslint/no-unsafe-argument": 3,
+      "@typescript-eslint/no-unsafe-assignment": 41,
+      "@typescript-eslint/no-unsafe-call": 15,
+      "@typescript-eslint/no-unsafe-member-access": 67,
+      "@typescript-eslint/no-unsafe-return": 5,
+      "@typescript-eslint/require-await": 1,
+      "prettier/prettier": 6
+    },
+    "src/medicines/import/salt-canonicalizer.spec.ts": {
+      "prettier/prettier": 17
+    },
+    "src/medicines/import/salt-canonicalizer.ts": {
+      "prettier/prettier": 9
+    },
+    "src/medicines/medicine-import.service.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 7,
+      "@typescript-eslint/no-unsafe-call": 3,
+      "@typescript-eslint/no-unsafe-member-access": 5,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "prettier/prettier": 1
+    },
+    "src/medicines/medicine-response.serializer.spec.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 3,
+      "@typescript-eslint/no-unsafe-member-access": 11,
+      "prettier/prettier": 265
+    },
+    "src/medicines/medicine-response.serializer.ts": {
+      "@typescript-eslint/no-unsafe-argument": 3,
+      "@typescript-eslint/no-unsafe-assignment": 92,
+      "@typescript-eslint/no-unsafe-call": 4,
+      "@typescript-eslint/no-unsafe-member-access": 72,
+      "@typescript-eslint/no-unsafe-return": 5,
+      "@typescript-eslint/no-unused-vars": 2,
+      "prettier/prettier": 307
+    },
+    "src/medicines/medicines-barcode.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 6,
+      "@typescript-eslint/no-unsafe-assignment": 2,
+      "@typescript-eslint/no-unsafe-member-access": 1,
+      "prettier/prettier": 5
+    },
+    "src/medicines/medicines-clinical-review.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 7,
+      "@typescript-eslint/no-unsafe-assignment": 9,
+      "@typescript-eslint/no-unsafe-member-access": 3,
+      "@typescript-eslint/no-unsafe-return": 2,
+      "@typescript-eslint/require-await": 2,
+      "prettier/prettier": 216
+    },
+    "src/medicines/medicines-search-relevance.service.spec.ts": {
+      "@typescript-eslint/no-base-to-string": 1,
+      "@typescript-eslint/no-unsafe-argument": 4,
+      "@typescript-eslint/no-unsafe-call": 1,
+      "@typescript-eslint/no-unsafe-member-access": 1,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "prettier/prettier": 13
+    },
+    "src/medicines/medicines.controller.ts": {
+      "@typescript-eslint/no-unsafe-call": 8,
+      "@typescript-eslint/no-unsafe-member-access": 7,
+      "prettier/prettier": 506
+    },
+    "src/medicines/medicines.module.ts": {
+      "prettier/prettier": 32
+    },
+    "src/medicines/medicines.service.ts": {
+      "@typescript-eslint/no-base-to-string": 1,
+      "@typescript-eslint/no-unsafe-argument": 15,
+      "@typescript-eslint/no-unsafe-assignment": 142,
+      "@typescript-eslint/no-unsafe-call": 38,
+      "@typescript-eslint/no-unsafe-enum-comparison": 3,
+      "@typescript-eslint/no-unsafe-member-access": 220,
+      "@typescript-eslint/no-unsafe-return": 16,
+      "prettier/prettier": 2077
+    },
+    "src/medicines/patient-explanations/patient-explanation.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 4,
+      "prettier/prettier": 113
+    },
+    "src/medicines/patient-explanations/patient-explanation.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "@typescript-eslint/no-unsafe-assignment": 11,
+      "@typescript-eslint/no-unsafe-call": 3,
+      "@typescript-eslint/no-unsafe-member-access": 26,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "@typescript-eslint/no-unused-vars": 1,
+      "prettier/prettier": 472
+    },
+    "src/medicines/web-sources/trusted-web-source-assist.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 6,
+      "@typescript-eslint/no-unsafe-assignment": 5,
+      "@typescript-eslint/no-unsafe-member-access": 7,
+      "@typescript-eslint/no-unsafe-return": 2,
+      "@typescript-eslint/require-await": 2,
+      "prettier/prettier": 5
+    },
+    "src/medicines/web-sources/trusted-web-source-assist.service.ts": {
+      "@typescript-eslint/no-base-to-string": 1,
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "@typescript-eslint/no-unsafe-assignment": 17,
+      "@typescript-eslint/no-unsafe-call": 8,
+      "@typescript-eslint/no-unsafe-member-access": 28,
+      "@typescript-eslint/no-unsafe-return": 2,
+      "no-control-regex": 1,
+      "no-useless-escape": 1,
+      "prettier/prettier": 742
+    },
+    "src/medicines/web-sources/trusted-web-source-policy.spec.ts": {
+      "prettier/prettier": 5
+    },
+    "src/medicines/web-sources/trusted-web-source-policy.ts": {
+      "prettier/prettier": 7
+    },
+    "src/notifications/notification-scheduler.service.ts": {
+      "prettier/prettier": 24
+    },
+    "src/notifications/notifications.controller.ts": {
+      "prettier/prettier": 13
+    },
+    "src/notifications/notifications.module.ts": {
+      "prettier/prettier": 1
+    },
+    "src/notifications/notifications.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 4,
+      "@typescript-eslint/no-unsafe-assignment": 2,
+      "@typescript-eslint/no-unsafe-call": 3,
+      "@typescript-eslint/no-unsafe-member-access": 9,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "prettier/prettier": 73
+    },
+    "src/notifications/notifications.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 2,
+      "prettier/prettier": 319
+    },
+    "src/notifications/phone-notification.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 3,
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "@typescript-eslint/no-unsafe-call": 2,
+      "@typescript-eslint/no-unsafe-member-access": 3,
+      "prettier/prettier": 81
+    },
+    "src/notifications/phone-notification.service.ts": {
+      "@typescript-eslint/no-base-to-string": 1,
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "prettier/prettier": 253
+    },
+    "src/ocr/ocr.module.ts": {
+      "prettier/prettier": 1
+    },
+    "src/ocr/ocr.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 1,
+      "@typescript-eslint/no-unsafe-argument": 3,
+      "@typescript-eslint/no-unsafe-assignment": 18,
+      "@typescript-eslint/no-unsafe-call": 11,
+      "@typescript-eslint/no-unsafe-member-access": 49,
+      "no-useless-escape": 1,
+      "prettier/prettier": 98
+    },
+    "src/patients/dto/create-patient-profile.dto.ts": {
+      "prettier/prettier": 4
+    },
+    "src/patients/dto/update-patient-profile.dto.ts": {
+      "prettier/prettier": 1
+    },
+    "src/patients/patients.service.ts": {
+      "@typescript-eslint/no-unsafe-enum-comparison": 1,
+      "prettier/prettier": 1
+    },
+    "src/prescriptions/candidate-ambiguity.service.ts": {
+      "prettier/prettier": 3
+    },
+    "src/prescriptions/candidate-generator-redesign.spec.ts": {
+      "@typescript-eslint/no-unused-vars": 2,
+      "@typescript-eslint/unbound-method": 1
+    },
+    "src/prescriptions/candidate-generator.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 8,
+      "@typescript-eslint/no-unsafe-assignment": 18,
+      "@typescript-eslint/no-unsafe-call": 4,
+      "@typescript-eslint/no-unsafe-member-access": 26,
+      "@typescript-eslint/no-unsafe-return": 2,
+      "prettier/prettier": 78
+    },
+    "src/prescriptions/confidence.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-member-access": 3
+    },
+    "src/prescriptions/confidence.service.ts": {
+      "@typescript-eslint/no-redundant-type-constituents": 2,
+      "@typescript-eslint/no-unsafe-assignment": 4,
+      "@typescript-eslint/no-unsafe-member-access": 3,
+      "prettier/prettier": 16
+    },
+    "src/prescriptions/corrective-audit.spec.ts": {
+      "@typescript-eslint/no-unnecessary-type-constraint": 1,
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/no-unsafe-assignment": 29,
+      "@typescript-eslint/no-unsafe-call": 6,
+      "@typescript-eslint/no-unsafe-member-access": 31,
+      "@typescript-eslint/no-unsafe-return": 2,
+      "@typescript-eslint/no-unused-vars": 5,
+      "@typescript-eslint/require-await": 1
+    },
+    "src/prescriptions/dictionary-candidate-generator.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 3,
+      "@typescript-eslint/no-unsafe-assignment": 4,
+      "@typescript-eslint/no-unsafe-call": 2,
+      "@typescript-eslint/no-unsafe-member-access": 2,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "no-useless-escape": 4
+    },
+    "src/prescriptions/dto/confirm-prescription.dto.ts": {
+      "@typescript-eslint/no-unused-vars": 1,
+      "prettier/prettier": 2
+    },
+    "src/prescriptions/dto/create-prescription.dto.ts": {
+      "prettier/prettier": 2
+    },
+    "src/prescriptions/evaluation/ocr-benchmark.spec.ts": {
+      "@typescript-eslint/no-require-imports": 1,
+      "@typescript-eslint/no-unnecessary-type-assertion": 1,
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/no-unsafe-assignment": 13,
+      "@typescript-eslint/no-unsafe-call": 16,
+      "@typescript-eslint/no-unsafe-member-access": 40,
+      "@typescript-eslint/no-unsafe-return": 10,
+      "@typescript-eslint/no-unused-vars": 3,
+      "@typescript-eslint/require-await": 5
+    },
+    "src/prescriptions/handwriting-normalizer.service.ts": {
+      "no-useless-escape": 2
+    },
+    "src/prescriptions/image-enhancement.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "@typescript-eslint/no-unsafe-assignment": 6,
+      "@typescript-eslint/no-unsafe-call": 29,
+      "@typescript-eslint/no-unsafe-member-access": 25,
+      "@typescript-eslint/no-unsafe-return": 6,
+      "@typescript-eslint/restrict-template-expressions": 1,
+      "prettier/prettier": 27
+    },
+    "src/prescriptions/learning.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 8,
+      "@typescript-eslint/no-unsafe-assignment": 13,
+      "@typescript-eslint/no-unsafe-call": 5,
+      "@typescript-eslint/no-unsafe-member-access": 26,
+      "prettier/prettier": 57
+    },
+    "src/prescriptions/llm-candidate-adapter.service.ts": {
+      "prettier/prettier": 1
+    },
+    "src/prescriptions/medical-context.service.ts": {
+      "prettier/prettier": 8
+    },
+    "src/prescriptions/medical-token.service.ts": {
+      "prettier/prettier": 15
+    },
+    "src/prescriptions/medicine-intelligence.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 6,
+      "@typescript-eslint/no-unsafe-assignment": 39,
+      "@typescript-eslint/no-unsafe-call": 13,
+      "@typescript-eslint/no-unsafe-member-access": 41,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "@typescript-eslint/no-unused-vars": 3,
+      "prefer-const": 5,
+      "prettier/prettier": 2
+    },
+    "src/prescriptions/medicine-validation.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 2,
+      "@typescript-eslint/no-unsafe-assignment": 10,
+      "@typescript-eslint/no-unsafe-call": 9,
+      "@typescript-eslint/no-unsafe-member-access": 33,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "prettier/prettier": 98
+    },
+    "src/prescriptions/medicine-verification.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/no-unsafe-assignment": 1,
+      "@typescript-eslint/no-unsafe-member-access": 1,
+      "prefer-const": 1,
+      "prettier/prettier": 11
+    },
+    "src/prescriptions/ocr-cache.service.ts": {
+      "@typescript-eslint/no-unsafe-return": 1
+    },
+    "src/prescriptions/ocr-failure.service.ts": {
+      "@typescript-eslint/no-unsafe-member-access": 4,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "prettier/prettier": 6
+    },
+    "src/prescriptions/ocr-metrics.service.ts": {
+      "@typescript-eslint/no-unsafe-member-access": 7,
+      "prettier/prettier": 8
+    },
+    "src/prescriptions/ocr-observability.service.ts": {
+      "@typescript-eslint/no-unsafe-member-access": 4,
+      "prettier/prettier": 5
+    },
+    "src/prescriptions/ocr-orchestrator.service.ts": {
+      "@typescript-eslint/no-misused-promises": 1,
+      "@typescript-eslint/no-unsafe-argument": 6,
+      "@typescript-eslint/no-unsafe-assignment": 24,
+      "@typescript-eslint/no-unsafe-call": 35,
+      "@typescript-eslint/no-unsafe-member-access": 56,
+      "@typescript-eslint/no-unsafe-return": 5,
+      "@typescript-eslint/no-unused-vars": 2,
+      "@typescript-eslint/require-await": 2
+    },
+    "src/prescriptions/ocr-review.service.ts": {
+      "@typescript-eslint/no-unsafe-member-access": 2,
+      "prettier/prettier": 2
+    },
+    "src/prescriptions/prescription-ai.service.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 6,
+      "@typescript-eslint/no-unsafe-member-access": 15,
+      "@typescript-eslint/no-unused-vars": 1,
+      "prettier/prettier": 6
+    },
+    "src/prescriptions/prescription-context.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "prefer-const": 1,
+      "prettier/prettier": 12
+    },
+    "src/prescriptions/prescription-layout.service.ts": {
+      "@typescript-eslint/no-unsafe-argument": 5,
+      "@typescript-eslint/no-unsafe-assignment": 18,
+      "@typescript-eslint/no-unsafe-call": 23,
+      "@typescript-eslint/no-unsafe-member-access": 29,
+      "@typescript-eslint/no-unsafe-return": 1,
+      "prettier/prettier": 416
+    },
+    "src/prescriptions/prescription-vision-job.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 4,
+      "@typescript-eslint/no-unsafe-argument": 4,
+      "@typescript-eslint/no-unsafe-assignment": 26,
+      "@typescript-eslint/no-unsafe-call": 14,
+      "@typescript-eslint/no-unsafe-member-access": 41,
+      "@typescript-eslint/no-unsafe-return": 5,
+      "@typescript-eslint/no-unused-vars": 3,
+      "prettier/prettier": 177
+    },
+    "src/prescriptions/prescription-vision.service.ts": {
+      "prettier/prettier": 276
+    },
+    "src/prescriptions/prescriptions.controller.ts": {
+      "prettier/prettier": 12
+    },
+    "src/prescriptions/prescriptions.module.ts": {
+      "prettier/prettier": 4
+    },
+    "src/prescriptions/prescriptions.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 1,
+      "@typescript-eslint/no-unsafe-argument": 12,
+      "@typescript-eslint/no-unsafe-assignment": 59,
+      "@typescript-eslint/no-unsafe-call": 24,
+      "@typescript-eslint/no-unsafe-enum-comparison": 1,
+      "@typescript-eslint/no-unsafe-member-access": 107,
+      "@typescript-eslint/no-unsafe-return": 5,
+      "@typescript-eslint/no-unused-vars": 12,
+      "prefer-const": 1,
+      "prettier/prettier": 149
+    },
+    "src/prescriptions/recovery/ocr-recovery.service.ts": {
+      "@typescript-eslint/no-unsafe-assignment": 2,
+      "@typescript-eslint/no-unsafe-call": 8,
+      "@typescript-eslint/no-unsafe-member-access": 9,
+      "@typescript-eslint/no-unused-vars": 3,
+      "prettier/prettier": 11
+    },
+    "src/prescriptions/regex-candidate-generator.service.ts": {
+      "no-useless-escape": 8,
+      "prettier/prettier": 4
+    },
+    "src/prescriptions/safety-filter.service.ts": {
+      "@typescript-eslint/no-redundant-type-constituents": 1,
+      "@typescript-eslint/no-unsafe-assignment": 3,
+      "@typescript-eslint/no-unsafe-member-access": 3,
+      "prettier/prettier": 11
+    },
+    "src/prisma/prisma.module.ts": {
+      "prettier/prettier": 1
+    },
+    "src/prisma/prisma.service.ts": {
+      "prettier/prettier": 1
+    },
+    "src/refills/refills.controller.ts": {
+      "prettier/prettier": 2
+    },
+    "src/refills/refills.module.ts": {
+      "prettier/prettier": 1
+    },
+    "src/refills/refills.service.ts": {
+      "prettier/prettier": 6
+    },
+    "src/remainders/dto/snooze-remainder.dto.ts": {
+      "prettier/prettier": 3
+    },
+    "src/remainders/remainder.controller.ts": {
+      "prettier/prettier": 2
+    },
+    "src/remainders/remainder.module.ts": {
+      "prettier/prettier": 1
+    },
+    "src/remainders/reminders.service.ts": {
+      "@typescript-eslint/no-unnecessary-type-assertion": 1,
+      "@typescript-eslint/no-unused-vars": 1,
+      "prettier/prettier": 53
+    },
+    "src/schedules/dto/create-schedule.dto.ts": {
+      "prettier/prettier": 2
+    },
+    "src/schedules/schedules.controller.ts": {
+      "prettier/prettier": 13
+    },
+    "src/schedules/schedules.service.spec.ts": {
+      "@typescript-eslint/no-unsafe-argument": 4,
+      "@typescript-eslint/unbound-method": 1
+    },
+    "src/users/dto/update-user.dto.ts": {
+      "prettier/prettier": 7
+    },
+    "src/users/users.controller.ts": {
+      "prettier/prettier": 7
+    },
+    "src/users/users.module.ts": {
+      "prettier/prettier": 2
+    },
+    "src/users/users.service.ts": {
+      "prettier/prettier": 11
+    }
+  }
+}

@@ -1,0 +1,59 @@
+[
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions-severe\\case_11_severe_oncology_clutter.png",
+    "expected_medicines": [
+      "Venetoclax",
+      "Azacitidine",
+      "Posaconazole DR",
+      "Allopurinol",
+      "Acyclovir"
+    ],
+    "expected_exclusions": [
+      "CBC",
+      "LFT",
+      "Neutropenic precautions",
+      "Mask",
+      "avoid crowd"
+    ],
+    "notes": [
+      "Rare/severe disease medicines plus lab and precaution clutter."
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions-severe\\case_12_transplant_small_pad.png",
+    "expected_medicines": [
+      "Tacrolimus",
+      "Mycophenolate mofetil",
+      "Valganciclovir",
+      "Prednisolone",
+      "Cotrimoxazole DS"
+    ],
+    "expected_exclusions": [
+      "Avoid grapefruit",
+      "BP chart"
+    ],
+    "notes": [
+      "Small handwritten prescription-pad style with vitals/noisy instructions."
+    ]
+  },
+  {
+    "file": "C:\\Users\\tharu\\meditrack-ai\\test-prescriptions-severe\\case_13_pah_ild_noisy.png",
+    "expected_medicines": [
+      "Riociguat",
+      "Bosentan",
+      "Nintedanib",
+      "Spironolactone",
+      "Torsemide"
+    ],
+    "expected_exclusions": [
+      "Oxygen concentrator",
+      "Echo",
+      "LFT report",
+      "No pregnancy",
+      "Low salt"
+    ],
+    "notes": [
+      "Rare/severe pulmonary medicines with device/lab/advice clutter."
+    ]
+  }
+]

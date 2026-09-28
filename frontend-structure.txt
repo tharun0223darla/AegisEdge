@@ -1,0 +1,66 @@
+Folder PATH listing for volume Windows
+Volume serial number is 0000022B 463B:D231
+C:\USERS\THARU\MEDITRACK-AI\APPS\WEB
+¦   .env.development
+¦   .env.example
+¦   .gitignore
+¦   index.html
+¦   package.json
+¦   postcss.config.js
+¦   tailwind.config.js
+¦   tsconfig.app.json
+¦   tsconfig.json
+¦   tsconfig.node.json
+¦   vite.config.ts
+¦   
++---public
+¦       favicon.svg
+¦       
++---src
+    +---animations
+    ¦       variants.ts
+    ¦       
+    +---constants
+    ¦       app.ts
+    ¦       
+    +---lib
+    ¦       api-client.ts
+    ¦       date.ts
+    ¦       env.ts
+    ¦       query-client.ts
+    ¦       storage.ts
+    ¦       utils.ts
+    ¦       
+    +---pages
+    +---providers
+    +---services
+    ¦       auth.service.ts
+    ¦       dashboard.service.ts
+    ¦       dose-logs.service.ts
+    ¦       medicines.service.ts
+    ¦       notifications.service.ts
+    ¦       prescriptions.service.ts
+    ¦       schedules.service.ts
+    ¦       
+    +---store
+    ¦       auth.store.ts
+    ¦       ui.store.ts
+    ¦       
+    +---styles
+    ¦       globals.css
+    ¦       
+    +---types
+    ¦       auth.ts
+    ¦       common.ts
+    ¦       dashboard.ts
+    ¦       dose-log.ts
+    ¦       medicine.ts
+    ¦       notification.ts
+    ¦       prescription.ts
+    ¦       schedule.ts
+    ¦       
+    +---validation
+            auth.schema.ts
+            medicine.schema.ts
+            schedule.schema.ts
+            

@@ -1,0 +1,1052 @@
+{
+  "info": {
+    "description": "Medicine-name detection boxes for full prescription images",
+    "version": "0.1.0",
+    "created_at": "2026-06-27T06:37:32.809069+00:00",
+    "source_archive": "C:\\Users\\tharu\\Downloads\\archive.zip"
+  },
+  "licenses": [],
+  "images": [
+    {
+      "id": 1,
+      "file_name": "prescription_0001.jpg",
+      "width": 304,
+      "height": 351,
+      "split": "train",
+      "source_entry": "data/1.jpg"
+    },
+    {
+      "id": 2,
+      "file_name": "prescription_0002.jpg",
+      "width": 720,
+      "height": 1280,
+      "split": "train",
+      "source_entry": "data/2.jpg"
+    },
+    {
+      "id": 3,
+      "file_name": "prescription_0003.jpg",
+      "width": 400,
+      "height": 261,
+      "split": "train",
+      "source_entry": "data/3.jpg"
+    },
+    {
+      "id": 4,
+      "file_name": "prescription_0004.jpg",
+      "width": 2400,
+      "height": 3600,
+      "split": "train",
+      "source_entry": "data/4.jpg"
+    },
+    {
+      "id": 5,
+      "file_name": "prescription_0005.jpg",
+      "width": 1024,
+      "height": 1024,
+      "split": "train",
+      "source_entry": "data/5.jpg"
+    },
+    {
+      "id": 6,
+      "file_name": "prescription_0006.jpg",
+      "width": 675,
+      "height": 1200,
+      "split": "train",
+      "source_entry": "data/6.jpg"
+    },
+    {
+      "id": 7,
+      "file_name": "prescription_0007.jpg",
+      "width": 1024,
+      "height": 1024,
+      "split": "test",
+      "source_entry": "data/7.jpg"
+    },
+    {
+      "id": 8,
+      "file_name": "prescription_0008.jpg",
+      "width": 1592,
+      "height": 1879,
+      "split": "train",
+      "source_entry": "data/8.jpg"
+    },
+    {
+      "id": 9,
+      "file_name": "prescription_0009.jpg",
+      "width": 624,
+      "height": 498,
+      "split": "train",
+      "source_entry": "data/9.jpg"
+    },
+    {
+      "id": 10,
+      "file_name": "prescription_0010.jpg",
+      "width": 960,
+      "height": 1280,
+      "split": "train",
+      "source_entry": "data/10.jpg"
+    },
+    {
+      "id": 11,
+      "file_name": "prescription_0011.jpg",
+      "width": 1024,
+      "height": 1024,
+      "split": "test",
+      "source_entry": "data/11.jpg"
+    },
+    {
+      "id": 12,
+      "file_name": "prescription_0012.jpg",
+      "width": 1110,
+      "height": 344,
+      "split": "test",
+      "source_entry": "data/12.jpg"
+    },
+    {
+      "id": 13,
+      "file_name": "prescription_0013.jpg",
+      "width": 1280,
+      "height": 720,
+      "split": "val",
+      "source_entry": "data/13.jpg"
+    },
+    {
+      "id": 14,
+      "file_name": "prescription_0014.jpg",
+      "width": 864,
+      "height": 1152,
+      "split": "train",
+      "source_entry": "data/14.jpg"
+    },
+    {
+      "id": 15,
+      "file_name": "prescription_0015.jpg",
+      "width": 635,
+      "height": 386,
+      "split": "train",
+      "source_entry": "data/15.jpg"
+    },
+    {
+      "id": 16,
+      "file_name": "prescription_0016.jpg",
+      "width": 304,
+      "height": 166,
+      "split": "val",
+      "source_entry": "data/16.jpg"
+    },
+    {
+      "id": 17,
+      "file_name": "prescription_0017.jpg",
+      "width": 1227,
+      "height": 1600,
+      "split": "train",
+      "source_entry": "data/17.jpg"
+    },
+    {
+      "id": 18,
+      "file_name": "prescription_0018.jpg",
+      "width": 500,
+      "height": 389,
+      "split": "train",
+      "source_entry": "data/18.jpg"
+    },
+    {
+      "id": 19,
+      "file_name": "prescription_0019.jpg",
+      "width": 640,
+      "height": 644,
+      "split": "train",
+      "source_entry": "data/19.jpg"
+    },
+    {
+      "id": 20,
+      "file_name": "prescription_0020.jpg",
+      "width": 200,
+      "height": 274,
+      "split": "test",
+      "source_entry": "data/20.jpg"
+    },
+    {
+      "id": 21,
+      "file_name": "prescription_0021.jpg",
+      "width": 750,
+      "height": 435,
+      "split": "train",
+      "source_entry": "data/21.jpg"
+    },
+    {
+      "id": 22,
+      "file_name": "prescription_0022.jpg",
+      "width": 400,
+      "height": 334,
+      "split": "train",
+      "source_entry": "data/22.jpg"
+    },
+    {
+      "id": 23,
+      "file_name": "prescription_0023.jpg",
+      "width": 602,
+      "height": 803,
+      "split": "train",
+      "source_entry": "data/23.jpg"
+    },
+    {
+      "id": 24,
+      "file_name": "prescription_0024.jpg",
+      "width": 1734,
+      "height": 2307,
+      "split": "train",
+      "source_entry": "data/24.jpg"
+    },
+    {
+      "id": 25,
+      "file_name": "prescription_0025.jpg",
+      "width": 400,
+      "height": 347,
+      "split": "train",
+      "source_entry": "data/25.jpg"
+    },
+    {
+      "id": 26,
+      "file_name": "prescription_0026.jpg",
+      "width": 440,
+      "height": 334,
+      "split": "train",
+      "source_entry": "data/26.jpg"
+    },
+    {
+      "id": 27,
+      "file_name": "prescription_0027.jpg",
+      "width": 921,
+      "height": 1361,
+      "split": "test",
+      "source_entry": "data/27.jpg"
+    },
+    {
+      "id": 28,
+      "file_name": "prescription_0028.jpg",
+      "width": 576,
+      "height": 1024,
+      "split": "train",
+      "source_entry": "data/28.jpg"
+    },
+    {
+      "id": 29,
+      "file_name": "prescription_0029.jpg",
+      "width": 685,
+      "height": 938,
+      "split": "train",
+      "source_entry": "data/29.jpg"
+    },
+    {
+      "id": 30,
+      "file_name": "prescription_0030.jpg",
+      "width": 1299,
+      "height": 1600,
+      "split": "test",
+      "source_entry": "data/30.jpg"
+    },
+    {
+      "id": 31,
+      "file_name": "prescription_0031.jpg",
+      "width": 400,
+      "height": 435,
+      "split": "train",
+      "source_entry": "data/31.jpg"
+    },
+    {
+      "id": 32,
+      "file_name": "prescription_0032.jpg",
+      "width": 312,
+      "height": 500,
+      "split": "train",
+      "source_entry": "data/32.jpg"
+    },
+    {
+      "id": 33,
+      "file_name": "prescription_0033.jpg",
+      "width": 960,
+      "height": 1280,
+      "split": "train",
+      "source_entry": "data/33.jpg"
+    },
+    {
+      "id": 34,
+      "file_name": "prescription_0034.jpg",
+      "width": 640,
+      "height": 737,
+      "split": "train",
+      "source_entry": "data/34.jpg"
+    },
+    {
+      "id": 35,
+      "file_name": "prescription_0035.jpg",
+      "width": 232,
+      "height": 218,
+      "split": "test",
+      "source_entry": "data/35.jpg"
+    },
+    {
+      "id": 36,
+      "file_name": "prescription_0036.jpg",
+      "width": 604,
+      "height": 900,
+      "split": "train",
+      "source_entry": "data/36.jpg"
+    },
+    {
+      "id": 37,
+      "file_name": "prescription_0037.jpg",
+      "width": 750,
+      "height": 575,
+      "split": "train",
+      "source_entry": "data/37.jpg"
+    },
+    {
+      "id": 38,
+      "file_name": "prescription_0038.jpg",
+      "width": 1800,
+      "height": 2559,
+      "split": "train",
+      "source_entry": "data/38.jpg"
+    },
+    {
+      "id": 39,
+      "file_name": "prescription_0039.jpg",
+      "width": 262,
+      "height": 193,
+      "split": "test",
+      "source_entry": "data/39.jpg"
+    },
+    {
+      "id": 40,
+      "file_name": "prescription_0040.jpg",
+      "width": 720,
+      "height": 1280,
+      "split": "val",
+      "source_entry": "data/40.jpg"
+    },
+    {
+      "id": 41,
+      "file_name": "prescription_0041.jpg",
+      "width": 400,
+      "height": 461,
+      "split": "train",
+      "source_entry": "data/41.jpg"
+    },
+    {
+      "id": 42,
+      "file_name": "prescription_0042.jpg",
+      "width": 944,
+      "height": 1164,
+      "split": "train",
+      "source_entry": "data/42.jpg"
+    },
+    {
+      "id": 43,
+      "file_name": "prescription_0043.jpg",
+      "width": 276,
+      "height": 400,
+      "split": "train",
+      "source_entry": "data/43.jpg"
+    },
+    {
+      "id": 44,
+      "file_name": "prescription_0044.jpg",
+      "width": 800,
+      "height": 458,
+      "split": "test",
+      "source_entry": "data/44.jpg"
+    },
+    {
+      "id": 45,
+      "file_name": "prescription_0045.jpg",
+      "width": 1024,
+      "height": 1024,
+      "split": "test",
+      "source_entry": "data/45.jpg"
+    },
+    {
+      "id": 46,
+      "file_name": "prescription_0046.jpg",
+      "width": 768,
+      "height": 1024,
+      "split": "train",
+      "source_entry": "data/46.jpg"
+    },
+    {
+      "id": 47,
+      "file_name": "prescription_0047.jpg",
+      "width": 191,
+      "height": 263,
+      "split": "train",
+      "source_entry": "data/47.jpg"
+    },
+    {
+      "id": 48,
+      "file_name": "prescription_0048.jpg",
+      "width": 424,
+      "height": 224,
+      "split": "train",
+      "source_entry": "data/48.jpg"
+    },
+    {
+      "id": 49,
+      "file_name": "prescription_0049.jpg",
+      "width": 462,
+      "height": 283,
+      "split": "train",
+      "source_entry": "data/49.jpg"
+    },
+    {
+      "id": 50,
+      "file_name": "prescription_0050.jpg",
+      "width": 701,
+      "height": 1000,
+      "split": "test",
+      "source_entry": "data/50.jpg"
+    },
+    {
+      "id": 51,
+      "file_name": "prescription_0051.jpg",
+      "width": 685,
+      "height": 915,
+      "split": "train",
+      "source_entry": "data/51.jpg"
+    },
+    {
+      "id": 52,
+      "file_name": "prescription_0052.jpg",
+      "width": 1023,
+      "height": 770,
+      "split": "train",
+      "source_entry": "data/52.jpg"
+    },
+    {
+      "id": 53,
+      "file_name": "prescription_0053.jpg",
+      "width": 810,
+      "height": 1053,
+      "split": "val",
+      "source_entry": "data/53.jpg"
+    },
+    {
+      "id": 54,
+      "file_name": "prescription_0054.jpg",
+      "width": 600,
+      "height": 424,
+      "split": "train",
+      "source_entry": "data/54.jpg"
+    },
+    {
+      "id": 55,
+      "file_name": "prescription_0055.jpg",
+      "width": 648,
+      "height": 839,
+      "split": "test",
+      "source_entry": "data/55.jpg"
+    },
+    {
+      "id": 56,
+      "file_name": "prescription_0056.jpg",
+      "width": 537,
+      "height": 403,
+      "split": "val",
+      "source_entry": "data/56.jpg"
+    },
+    {
+      "id": 57,
+      "file_name": "prescription_0057.jpg",
+      "width": 984,
+      "height": 1138,
+      "split": "train",
+      "source_entry": "data/57.jpg"
+    },
+    {
+      "id": 58,
+      "file_name": "prescription_0058.jpg",
+      "width": 1024,
+      "height": 1024,
+      "split": "test",
+      "source_entry": "data/58.jpg"
+    },
+    {
+      "id": 59,
+      "file_name": "prescription_0059.jpg",
+      "width": 1000,
+      "height": 562,
+      "split": "train",
+      "source_entry": "data/59.jpg"
+    },
+    {
+      "id": 60,
+      "file_name": "prescription_0060.jpg",
+      "width": 824,
+      "height": 1280,
+      "split": "train",
+      "source_entry": "data/60.jpg"
+    },
+    {
+      "id": 61,
+      "file_name": "prescription_0061.jpg",
+      "width": 755,
+      "height": 901,
+      "split": "train",
+      "source_entry": "data/61.jpg"
+    },
+    {
+      "id": 62,
+      "file_name": "prescription_0062.jpg",
+      "width": 560,
+      "height": 560,
+      "split": "val",
+      "source_entry": "data/62.jpg"
+    },
+    {
+      "id": 63,
+      "file_name": "prescription_0063.jpg",
+      "width": 2061,
+      "height": 2270,
+      "split": "train",
+      "source_entry": "data/63.jpg"
+    },
+    {
+      "id": 64,
+      "file_name": "prescription_0064.jpg",
+      "width": 680,
+      "height": 446,
+      "split": "train",
+      "source_entry": "data/64.jpg"
+    },
+    {
+      "id": 65,
+      "file_name": "prescription_0065.jpg",
+      "width": 584,
+      "height": 892,
+      "split": "train",
+      "source_entry": "data/65.jpg"
+    },
+    {
+      "id": 66,
+      "file_name": "prescription_0066.jpg",
+      "width": 2400,
+      "height": 3600,
+      "split": "val",
+      "source_entry": "data/66.jpg"
+    },
+    {
+      "id": 67,
+      "file_name": "prescription_0067.jpg",
+      "width": 1200,
+      "height": 1600,
+      "split": "train",
+      "source_entry": "data/67.jpg"
+    },
+    {
+      "id": 68,
+      "file_name": "prescription_0068.jpg",
+      "width": 1637,
+      "height": 1050,
+      "split": "train",
+      "source_entry": "data/68.jpg"
+    },
+    {
+      "id": 69,
+      "file_name": "prescription_0069.jpg",
+      "width": 363,
+      "height": 139,
+      "split": "train",
+      "source_entry": "data/69.jpg"
+    },
+    {
+      "id": 70,
+      "file_name": "prescription_0070.jpg",
+      "width": 400,
+      "height": 461,
+      "split": "train",
+      "source_entry": "data/70.jpg"
+    },
+    {
+      "id": 71,
+      "file_name": "prescription_0071.jpg",
+      "width": 1089,
+      "height": 675,
+      "split": "train",
+      "source_entry": "data/71.jpg"
+    },
+    {
+      "id": 72,
+      "file_name": "prescription_0072.jpg",
+      "width": 767,
+      "height": 1023,
+      "split": "train",
+      "source_entry": "data/72.jpg"
+    },
+    {
+      "id": 73,
+      "file_name": "prescription_0073.jpg",
+      "width": 864,
+      "height": 864,
+      "split": "train",
+      "source_entry": "data/73.jpg"
+    },
+    {
+      "id": 74,
+      "file_name": "prescription_0074.jpg",
+      "width": 960,
+      "height": 1280,
+      "split": "train",
+      "source_entry": "data/74.jpg"
+    },
+    {
+      "id": 75,
+      "file_name": "prescription_0075.jpg",
+      "width": 850,
+      "height": 721,
+      "split": "train",
+      "source_entry": "data/75.jpg"
+    },
+    {
+      "id": 76,
+      "file_name": "prescription_0076.jpg",
+      "width": 291,
+      "height": 173,
+      "split": "train",
+      "source_entry": "data/76.jpg"
+    },
+    {
+      "id": 77,
+      "file_name": "prescription_0077.jpg",
+      "width": 304,
+      "height": 347,
+      "split": "train",
+      "source_entry": "data/77.jpg"
+    },
+    {
+      "id": 78,
+      "file_name": "prescription_0078.jpg",
+      "width": 602,
+      "height": 715,
+      "split": "test",
+      "source_entry": "data/78.jpg"
+    },
+    {
+      "id": 79,
+      "file_name": "prescription_0079.jpg",
+      "width": 1200,
+      "height": 1567,
+      "split": "test",
+      "source_entry": "data/79.jpg"
+    },
+    {
+      "id": 80,
+      "file_name": "prescription_0080.jpg",
+      "width": 750,
+      "height": 898,
+      "split": "train",
+      "source_entry": "data/80.jpg"
+    },
+    {
+      "id": 81,
+      "file_name": "prescription_0081.jpg",
+      "width": 1024,
+      "height": 1024,
+      "split": "val",
+      "source_entry": "data/81.jpg"
+    },
+    {
+      "id": 82,
+      "file_name": "prescription_0082.jpg",
+      "width": 1024,
+      "height": 1024,
+      "split": "train",
+      "source_entry": "data/82.jpg"
+    },
+    {
+      "id": 83,
+      "file_name": "prescription_0083.jpg",
+      "width": 808,
+      "height": 515,
+      "split": "val",
+      "source_entry": "data/83.jpg"
+    },
+    {
+      "id": 84,
+      "file_name": "prescription_0084.jpg",
+      "width": 960,
+      "height": 1280,
+      "split": "train",
+      "source_entry": "data/84.jpg"
+    },
+    {
+      "id": 85,
+      "file_name": "prescription_0085.jpg",
+      "width": 3120,
+      "height": 4160,
+      "split": "train",
+      "source_entry": "data/85.jpg"
+    },
+    {
+      "id": 86,
+      "file_name": "prescription_0086.jpg",
+      "width": 496,
+      "height": 557,
+      "split": "train",
+      "source_entry": "data/86.jpg"
+    },
+    {
+      "id": 87,
+      "file_name": "prescription_0087.jpg",
+      "width": 750,
+      "height": 435,
+      "split": "train",
+      "source_entry": "data/87.jpg"
+    },
+    {
+      "id": 88,
+      "file_name": "prescription_0088.jpg",
+      "width": 1103,
+      "height": 689,
+      "split": "train",
+      "source_entry": "data/88.jpg"
+    },
+    {
+      "id": 89,
+      "file_name": "prescription_0089.jpg",
+      "width": 525,
+      "height": 401,
+      "split": "train",
+      "source_entry": "data/89.jpg"
+    },
+    {
+      "id": 90,
+      "file_name": "prescription_0090.jpg",
+      "width": 400,
+      "height": 449,
+      "split": "train",
+      "source_entry": "data/90.jpg"
+    },
+    {
+      "id": 91,
+      "file_name": "prescription_0091.jpg",
+      "width": 768,
+      "height": 1024,
+      "split": "train",
+      "source_entry": "data/91.jpg"
+    },
+    {
+      "id": 92,
+      "file_name": "prescription_0092.jpg",
+      "width": 675,
+      "height": 1200,
+      "split": "val",
+      "source_entry": "data/92.jpg"
+    },
+    {
+      "id": 93,
+      "file_name": "prescription_0093.jpg",
+      "width": 381,
+      "height": 408,
+      "split": "test",
+      "source_entry": "data/93.jpg"
+    },
+    {
+      "id": 94,
+      "file_name": "prescription_0094.jpg",
+      "width": 755,
+      "height": 901,
+      "split": "train",
+      "source_entry": "data/94.jpg"
+    },
+    {
+      "id": 95,
+      "file_name": "prescription_0095.jpg",
+      "width": 726,
+      "height": 1024,
+      "split": "train",
+      "source_entry": "data/95.jpg"
+    },
+    {
+      "id": 96,
+      "file_name": "prescription_0096.jpg",
+      "width": 1234,
+      "height": 818,
+      "split": "train",
+      "source_entry": "data/96.jpg"
+    },
+    {
+      "id": 97,
+      "file_name": "prescription_0097.jpg",
+      "width": 744,
+      "height": 900,
+      "split": "val",
+      "source_entry": "data/97.jpg"
+    },
+    {
+      "id": 98,
+      "file_name": "prescription_0098.jpg",
+      "width": 720,
+      "height": 1280,
+      "split": "train",
+      "source_entry": "data/98.jpg"
+    },
+    {
+      "id": 99,
+      "file_name": "prescription_0099.jpg",
+      "width": 478,
+      "height": 680,
+      "split": "train",
+      "source_entry": "data/99.jpg"
+    },
+    {
+      "id": 100,
+      "file_name": "prescription_0100.jpg",
+      "width": 1200,
+      "height": 921,
+      "split": "train",
+      "source_entry": "data/100.jpg"
+    },
+    {
+      "id": 101,
+      "file_name": "prescription_0101.jpg",
+      "width": 1200,
+      "height": 800,
+      "split": "val",
+      "source_entry": "data/101.jpg"
+    },
+    {
+      "id": 102,
+      "file_name": "prescription_0102.jpg",
+      "width": 706,
+      "height": 596,
+      "split": "test",
+      "source_entry": "data/102.jpg"
+    },
+    {
+      "id": 103,
+      "file_name": "prescription_0103.jpg",
+      "width": 500,
+      "height": 396,
+      "split": "test",
+      "source_entry": "data/103.jpg"
+    },
+    {
+      "id": 104,
+      "file_name": "prescription_0104.jpg",
+      "width": 750,
+      "height": 435,
+      "split": "test",
+      "source_entry": "data/104.jpg"
+    },
+    {
+      "id": 105,
+      "file_name": "prescription_0105.jpg",
+      "width": 960,
+      "height": 1280,
+      "split": "val",
+      "source_entry": "data/105.jpg"
+    },
+    {
+      "id": 106,
+      "file_name": "prescription_0106.jpg",
+      "width": 443,
+      "height": 249,
+      "split": "train",
+      "source_entry": "data/106.jpg"
+    },
+    {
+      "id": 107,
+      "file_name": "prescription_0107.jpg",
+      "width": 1200,
+      "height": 712,
+      "split": "train",
+      "source_entry": "data/107.jpg"
+    },
+    {
+      "id": 108,
+      "file_name": "prescription_0108.jpg",
+      "width": 2400,
+      "height": 3600,
+      "split": "train",
+      "source_entry": "data/108.jpg"
+    },
+    {
+      "id": 109,
+      "file_name": "prescription_0109.jpg",
+      "width": 299,
+      "height": 169,
+      "split": "val",
+      "source_entry": "data/109.jpg"
+    },
+    {
+      "id": 110,
+      "file_name": "prescription_0110.jpg",
+      "width": 733,
+      "height": 524,
+      "split": "test",
+      "source_entry": "data/110.jpg"
+    },
+    {
+      "id": 111,
+      "file_name": "prescription_0111.jpg",
+      "width": 1024,
+      "height": 1024,
+      "split": "train",
+      "source_entry": "data/111.jpg"
+    },
+    {
+      "id": 112,
+      "file_name": "prescription_0112.jpg",
+      "width": 500,
+      "height": 654,
+      "split": "train",
+      "source_entry": "data/112.jpg"
+    },
+    {
+      "id": 113,
+      "file_name": "prescription_0113.jpg",
+      "width": 576,
+      "height": 608,
+      "split": "train",
+      "source_entry": "data/113.jpg"
+    },
+    {
+      "id": 114,
+      "file_name": "prescription_0114.jpg",
+      "width": 808,
+      "height": 515,
+      "split": "val",
+      "source_entry": "data/114.jpg"
+    },
+    {
+      "id": 115,
+      "file_name": "prescription_0115.jpg",
+      "width": 675,
+      "height": 1200,
+      "split": "train",
+      "source_entry": "data/115.jpg"
+    },
+    {
+      "id": 116,
+      "file_name": "prescription_0116.jpg",
+      "width": 547,
+      "height": 1200,
+      "split": "train",
+      "source_entry": "data/116.jpg"
+    },
+    {
+      "id": 117,
+      "file_name": "prescription_0117.jpg",
+      "width": 328,
+      "height": 153,
+      "split": "val",
+      "source_entry": "data/117.jpg"
+    },
+    {
+      "id": 118,
+      "file_name": "prescription_0118.jpg",
+      "width": 1024,
+      "height": 1024,
+      "split": "train",
+      "source_entry": "data/118.jpg"
+    },
+    {
+      "id": 119,
+      "file_name": "prescription_0119.jpg",
+      "width": 2400,
+      "height": 3600,
+      "split": "train",
+      "source_entry": "data/119.jpg"
+    },
+    {
+      "id": 120,
+      "file_name": "prescription_0120.jpg",
+      "width": 340,
+      "height": 270,
+      "split": "train",
+      "source_entry": "data/120.jpg"
+    },
+    {
+      "id": 121,
+      "file_name": "prescription_0121.jpg",
+      "width": 800,
+      "height": 450,
+      "split": "train",
+      "source_entry": "data/121.jpg"
+    },
+    {
+      "id": 122,
+      "file_name": "prescription_0122.jpg",
+      "width": 630,
+      "height": 354,
+      "split": "train",
+      "source_entry": "data/122.jpg"
+    },
+    {
+      "id": 123,
+      "file_name": "prescription_0123.jpg",
+      "width": 400,
+      "height": 308,
+      "split": "train",
+      "source_entry": "data/123.jpg"
+    },
+    {
+      "id": 124,
+      "file_name": "prescription_0124.jpg",
+      "width": 1872,
+      "height": 2752,
+      "split": "train",
+      "source_entry": "data/124.jpg"
+    },
+    {
+      "id": 125,
+      "file_name": "prescription_0125.jpg",
+      "width": 675,
+      "height": 1200,
+      "split": "val",
+      "source_entry": "data/125.jpg"
+    },
+    {
+      "id": 126,
+      "file_name": "prescription_0126.jpg",
+      "width": 424,
+      "height": 371,
+      "split": "val",
+      "source_entry": "data/126.jpg"
+    },
+    {
+      "id": 127,
+      "file_name": "prescription_0127.jpg",
+      "width": 196,
+      "height": 257,
+      "split": "train",
+      "source_entry": "data/127.jpg"
+    },
+    {
+      "id": 128,
+      "file_name": "prescription_0128.jpg",
+      "width": 2400,
+      "height": 3600,
+      "split": "val",
+      "source_entry": "data/128.jpg"
+    },
+    {
+      "id": 129,
+      "file_name": "prescription_0129.jpg",
+      "width": 400,
+      "height": 436,
+      "split": "train",
+      "source_entry": "data/129.jpg"
+    }
+  ],
+  "annotations": [],
+  "categories": [
+    {
+      "id": 1,
+      "name": "medicine_name",
+      "supercategory": "prescription"
+    }
+  ],
+  "image_statuses": {}
+}

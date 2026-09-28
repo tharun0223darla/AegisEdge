@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MediTrack AI</string>
+    <string name="title_activity_main">MediTrack AI</string>
+    <string name="package_name">com.meditrack.ai</string>
+    <string name="custom_url_scheme">com.meditrack.ai</string>
+    <string name="health_connect_privacy_title">Health Connect privacy</string>
+    <string name="health_connect_privacy_body">MediTrack reads only the health data types you approve: heart rate, oxygen saturation, blood pressure, and blood glucose. MediTrack does not write to Health Connect. Readings are sent to your MediTrack account only when you choose Sync now. They support personal tracking and are not a diagnosis or emergency monitoring service.</string>
+    <string name="health_connect_privacy_controls">You can deny individual permissions, pause synchronization in MediTrack, or revoke access at any time in Health Connect settings. Health readings are protected as sensitive account data and are not used for advertising.</string>
+</resources>

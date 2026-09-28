@@ -1,0 +1,83 @@
+# =============================================================================
+#  Local development stack — Postgres + API
+#  Start :  docker compose up -d
+#  Logs  :  docker compose logs -f api
+#  Stop  :  docker compose down
+# =============================================================================
+
+services:
+  ocr:
+    build:
+      context: ./services/preprocess
+      dockerfile: Dockerfile
+    container_name: meditrack-ocr
+    restart: unless-stopped
+    environment:
+      OCR_EAGER_LOAD: 'true'
+      OCR_REQUIRE_TOKEN: 'true'
+      OCR_SERVICE_TOKEN: ${OCR_SERVICE_TOKEN:-local-ocr-token-change-before-production-1234}
+      OCR_CONCURRENCY: ${OCR_CONCURRENCY:-1}
+      OCR_MAX_VARIANTS: ${OCR_MAX_VARIANTS:-4}
+      OCR_VARIANT_BUDGET_SECONDS: ${OCR_VARIANT_BUDGET_SECONDS:-90}
+      PADDLE_DEVICE: ${PADDLE_DEVICE:-cpu}
+      PADDLE_ENABLE_MKLDNN: ${PADDLE_ENABLE_MKLDNN:-false}
+      PADDLE_DET_MODEL: ${PADDLE_DET_MODEL:-PP-OCRv6_medium_det}
+      PADDLE_REC_MODEL: ${PADDLE_REC_MODEL:-PP-OCRv6_medium_rec}
+    ports:
+      - '8000:8000'
+    volumes:
+      - meditrack-ocr-models:/home/meditrack/.paddlex
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: meditrack-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-meditrack_db}
+    ports:
+      - '5432:5432'
+    volumes:
+      - meditrack-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: meditrack-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ocr:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-meditrack_db}?schema=public
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-please-32-chars-min}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      TRUST_PROXY: ${TRUST_PROXY:-1}
+      OCR_SERVICE_URL: http://ocr:8000
+      OCR_SERVICE_TOKEN: ${OCR_SERVICE_TOKEN:-local-ocr-token-change-before-production-1234}
+      OCR_ALLOW_TESSERACT_FALLBACK: 'false'
+      PRESCRIPTION_VISION_MODE: sidecar
+    ports:
+      - '3000:3000'
+    volumes:
+      - meditrack-uploads:/app/uploads
+      - meditrack-logs:/app/logs
+
+volumes:
+  meditrack-ocr-models:
+  meditrack-pgdata:
+  meditrack-uploads:
+  meditrack-logs:
